@@ -14,7 +14,7 @@ Created on Tue Jan 28 08:22:18 2020
 tokens = (
     'NAME','NUMBER',
     'PLUS','MINUS','TIMES','DIVIDE','EQUALS',
-    'LPAREN','RPAREN',
+    'LPAREN','RPAREN','FOR',
     )
 
 # Tokens
@@ -35,6 +35,15 @@ def t_NUMBER(t):
     except ValueError:
         print("Integer value too large %d", t.value)
         t.value = 0
+    return t
+
+def t_FOR(t):
+    r'FOR'
+    try:
+        
+        print("asdf")
+    except ValueError:
+        print("ERR")
     return t
 
 # Ignored characters
@@ -84,6 +93,11 @@ def p_expression_binop(t):
 def p_expression_uminus(t):
     'expression : MINUS expression %prec UMINUS'
     t[0] = -t[2]
+
+def p_expression_for(t):
+    'expression : FOR NUMBER NUMBER NUMBER'
+    print("Entro con "+str(t[1])+" "+str(t[2])+" "+str(t[3])+" ")
+
 
 def p_expression_group(t):
     'expression : LPAREN expression RPAREN'
