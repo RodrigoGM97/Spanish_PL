@@ -1,5 +1,5 @@
 tokens = (
-    'NAME','NUMBER',
+    'NAME','INT', 'FLOAT', 'STRING', 'NUM', 'TEXTO',
     'PLUS','MINUS','TIMES','DIVIDE','EQUALS',
     'LPAREN','RPAREN','FOR', 'SI', 'LBRACE', 'RBRACE',
     'EOC'
@@ -17,9 +17,17 @@ t_RPAREN  = r'\)'
 t_LBRACE  = r'\{'
 t_RBRACE  = r'\}'
 t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
+t_STRING  = r'"[a-zA-Z0-9_ ]*"'
+t_NUM     = r'NUM'
+t_TEXTO   = r'TEXTO'  
 t_EOC     = r'\;'
 
-def t_NUMBER(t):
+def t_FLOAT(t): #we put float above integer because otherwise it will check if it is an int first and crash on floats.
+    r'\d+\.\d+'
+    t.value = float(t.value)
+    return t
+
+def t_INT(t):
     r'\d+'
     try:
         t.value = int(t.value)
@@ -75,7 +83,7 @@ def p_statement_expr(t):
                  | assign
                  | expression EOC statement'''
     
-    print("Enter statement")
+    #print(t)
 
 def p_statement_empty(t):
     '''empty : '''
@@ -83,7 +91,7 @@ def p_statement_empty(t):
 
 def p_statement_assign(t):
     '''assign : NAME EQUALS expression EOC statement'''
-    print("Enter assign")
+    #print("Enter assign")
     variables[t[1]] = t[3]
 
 def p_expression_binop(t):
@@ -101,21 +109,20 @@ def p_expression_uminus(t):
     t[0] = -t[2]
 
 def p_expression_for(t):
-    'expression : FOR NUMBER NUMBER NUMBER'
+    'expression : FOR INT INT INT'
     print("Entro con "+str(t[1])+" "+str(t[2])+" "+str(t[3])+" ")
 
 def p_expression_si(t):
-    'expression : SI LPAREN RPAREN LBRACE RBRACE'
-    
-
+    'expression : SI LPAREN RPAREN LBRACE statement RBRACE'
 
 def p_expression_group(t):
     'expression : LPAREN expression RPAREN'
     t[0] = t[2]
 
-def p_expression_number(t):
-    'expression : NUMBER'
-    t[0] = t[1]
+def p_expression_number():
+    '''expression : FLOAT
+                  | INT
+                  | STRING'''
 
 def p_expression_name(t):
     'expression : NAME'
@@ -136,4 +143,10 @@ while True:
         s = input('calc > ')   # Use raw_input on Python 2
     except EOFError:
         break
-    parser.parse(s)
+    s = s.split(';')
+    print(s)
+    for i in s[:-1]:
+        i = i+';'
+        print("sent to parse: "+i)       
+        parser.parse(i)
+    
