@@ -18,8 +18,6 @@ t_LBRACE  = r'\{'
 t_RBRACE  = r'\}'
 t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
 t_STRING  = r'"[a-zA-Z0-9_ ]*"'
-t_NUM     = r'NUM '
-t_TEXTO   = r'TEXTO '  
 t_EOC     = r'\;'
 
 def t_FLOAT(t): #we put float above integer because otherwise it will check if it is an int first and crash on floats.
@@ -47,7 +45,23 @@ def t_FOR(t):
 def t_SI(t):
     r'SI'
     try:
+        print("Entro NUM")
+    except ValueError:
+        print("ERR")
+    return t
+
+def t_NUM(t):
+    r'NUM'
+    try:
         print("Entro SI sintaxis")
+    except ValueError:
+        print("ERR")
+    return t
+
+def t_TEXTO(t):
+    r'TEXTO'
+    try:
+        print("Entro TEXTO sintaxis")
     except ValueError:
         print("ERR")
     return t
@@ -73,6 +87,7 @@ precedence = (
     ('left','PLUS','MINUS'),
     ('left','TIMES','DIVIDE'),
     ('right','UMINUS', 'EOC'),
+    ('left', 'NUM'),
     )
 
 # dictionary of names
@@ -90,9 +105,11 @@ def p_statement_empty(t):
     t[0] = None
 
 def p_statement_assign(t):
-    '''assign : NAME EQUALS expression EOC statement'''
+    '''assign : NUM NAME EQUALS expression EOC statement
+              | TEXTO NAME EQUALS expression EOC statement'''
     #print("Enter assign")
-    variables[t[1]] = t[3]
+    print("Asigna: "+str(t[4]))
+    variables[t[2]] = t[4]
 
 def p_expression_binop(t):
     '''expression : expression PLUS expression
@@ -121,8 +138,14 @@ def p_expression_group(t):
 
 def p_expression_number(t):
     '''expression : INT
-                  | FLOAT'''
-    t[0] = t[1]
+                  | FLOAT
+                  | STRING'''
+    
+    if (isinstance(t[1], str)):
+        t[0] = t[1][1:-1]
+    else:
+        t[0] = t[1]
+
 
 def p_expression_name(t):
     'expression : NAME'
