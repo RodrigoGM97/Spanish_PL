@@ -35,11 +35,17 @@ def p_statement_assign_array(t):
     variables[t[4]] = []
 
 def p_arrayOP_append(t):
-    '''arrayOP : NUM NAME APPEND LPAREN expression RPAREN EOC statement
-               | TEXTO NAME APPEND LPAREN string_expression RPAREN EOC statement'''
+    '''arrayOP : NAME APPEND LPAREN expression RPAREN EOC statement
+               | NAME APPEND LPAREN string_expression RPAREN EOC statement'''
 
-    variables[t[2]].append(t[5])
-
+    if t[1] in variables:
+        #My var exists. 
+        print("My var does exist. I can append.")
+        variables[t[1]].append(t[4])
+        print("Appended " + str(t[4]) + " to " + str(t[1]))
+    else:
+        print("Error: var b has not been declared")
+        
 def p_expression_binop(t):
     '''expression : expression PLUS expression
                   | expression MINUS expression
@@ -86,7 +92,7 @@ def p_expression_name(t):
     'expression : NAME'
     try:
         t[0] = variables[t[1]]
-        print(t[0])
+        print("Var " + str(t[1]) + " has " + str(t[0]))
     except LookupError:
         print("Undefined name '%s'" % t[1])
         t[0] = 0

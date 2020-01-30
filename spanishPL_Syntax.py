@@ -73,7 +73,7 @@ def t_TEXTO(t):
     return t
 
 def t_APPEND(t):
-    r'.anadefin'
+    r'.agrega'
     '''
     try:
         print("Entro append sintaxis")
