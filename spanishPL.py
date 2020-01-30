@@ -18,8 +18,8 @@ t_LBRACE  = r'\{'
 t_RBRACE  = r'\}'
 t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
 t_STRING  = r'"[a-zA-Z0-9_ ]*"'
-t_NUM     = r'NUM'
-t_TEXTO   = r'TEXTO'  
+t_NUM     = r'NUM '
+t_TEXTO   = r'TEXTO '  
 t_EOC     = r'\;'
 
 def t_FLOAT(t): #we put float above integer because otherwise it will check if it is an int first and crash on floats.
@@ -92,7 +92,7 @@ def p_statement_empty(t):
 def p_statement_assign(t):
     '''assign : NAME EQUALS expression EOC statement'''
     #print("Enter assign")
-    variables[t[1]] = t[3]
+    variables[t[2]] = t[4]
 
 def p_expression_binop(t):
     '''expression : expression PLUS expression
@@ -119,15 +119,16 @@ def p_expression_group(t):
     'expression : LPAREN expression RPAREN'
     t[0] = t[2]
 
-def p_expression_number():
-    '''expression : FLOAT
-                  | INT
-                  | STRING'''
+def p_expression_number(t):
+    '''expression : INT
+                  | FLOAT'''
+    t[0] = t[1]
 
 def p_expression_name(t):
     'expression : NAME'
     try:
         t[0] = variables[t[1]]
+        print(t[0])
     except LookupError:
         print("Undefined name '%s'" % t[1])
         t[0] = 0
