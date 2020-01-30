@@ -92,7 +92,7 @@ def p_statement_empty(t):
 def p_statement_assign(t):
     '''assign : NAME EQUALS expression EOC statement'''
     #print("Enter assign")
-    variables[t[2]] = t[4]
+    variables[t[1]] = t[3]
 
 def p_expression_binop(t):
     '''expression : expression PLUS expression
