@@ -1,0 +1,8 @@
+NUM a=7;
+a;
+NUM[]b;
+b;
+NUM b.anadefin(5);
+b;
+NUM b.anadefin(6);
+b;
