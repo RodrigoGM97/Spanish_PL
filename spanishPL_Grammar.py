@@ -120,9 +120,31 @@ def p_expression_for(t):
     print("Entro con "+str(t[1])+" "+str(t[2])+" "+str(t[3])+" ")
 
 def p_condition_si(t):
-    '''condition : SI LPAREN RPAREN LBRACE code RBRACE
+    '''condition : SI LPAREN checkcond RPAREN LBRACE code RBRACE
     '''
-                
+
+def p_checkcond_if_name(t):
+    '''checkcond : NAME EQUALS EQUALS NAME'''
+
+    if ( variables[t[1]] == variables[t[4]] ):
+        print("Mismos")
+    #No terminado
+
+def p_checkcond_if_string(t):
+    '''checkcond : NAME EQUALS EQUALS STRING'''
+    #No terminado
+    if ( variables[t[1]][1] == t[4][1:-1] ):
+        print("Mismos")
+
+
+def p_checkcond_if_num(t):
+    '''checkcond : NAME EQUALS EQUALS INT
+                  | NAME EQUALS EQUALS FLOAT'''
+    #No terminado
+    if ( variables[t[1]][1] == t[4] ):
+        print("Mismos")
+
+
 
 def p_expression_group(t):
     'expression : LPAREN expression RPAREN'

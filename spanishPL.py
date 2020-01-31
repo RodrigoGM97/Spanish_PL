@@ -23,7 +23,7 @@ open_bracket_count=0
 check_for_brackets = False
 parsed_contents = []
 new_contents = []
-print(contents)
+#print(contents)
 #print("*********starting cycle ****************")
 #i = 0
 #while( i <len(contents)):

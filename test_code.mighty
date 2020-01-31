@@ -1,20 +1,13 @@
-SI ()
+NUM i=7.8;
+TEXTO a="hola";
+i;
+a;
+SI (a == "hola")
 {
-    SI ()
+    SI (i == 7.8)
     {
         TEXTO hola2 = "hola2";
     };
     TEXTO hola = hola2;
     hola;
-};
-NUM a=7;
-NUM c;
-c;
-a;
-hola2;
-SI() {
-    a;
-    c = 1 + 1;
-    c = c + 10;
-    c;
 };
