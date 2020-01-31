@@ -17,9 +17,9 @@ def p_code(t):
     #print("I received " + str(t))
 def p_statement_expr(t):
     '''statement : empty
-                 | condition
-                 | assign 
-                 | arrayOP 
+                 | condition EOC
+                 | assign EOC
+                 | arrayOP EOC 
                  | expression EOC'''
     
     #print(t)
@@ -30,7 +30,7 @@ def p_statement_empty(t):
 
 def p_assign_existing_var_name(t):
     '''
-    assign : NAME EQUALS NAME EOC
+    assign : NAME EQUALS NAME
     '''
     if t[1] in variables and t[3] in variables:
         #siguiente validación es checar sus conetidos:
@@ -47,7 +47,7 @@ def p_assign_existing_var_name(t):
         else:
             print("Error: unknown variable " + str(t[3]))
 def p_assign_existing_var(t):
-    '''assign : NAME EQUALS expression EOC
+    '''assign : NAME EQUALS expression
     '''
     #we need to distinguish between var types.
     if t[1] in variables:
@@ -57,18 +57,17 @@ def p_assign_existing_var(t):
     else:
         print("Error: var " + t[1] + " has not been declared")
 def p_statement_assign_with_value(t):
-    '''assign : NUM NAME EQUALS expression EOC
-              | TEXTO NAME EQUALS string_expression EOC'''
+    '''assign : NUM NAME EQUALS expression
+              | TEXTO NAME EQUALS string_expression'''
     #print("Asigna: "+str(t[4]))
     if t[2] in variables:
         print("Error: Cannot declare two variables with the same name. Var " + str(t[2]) + " already exists.")
         
     else:
         variables[t[2]] = (str(t[1]),t[4])
-        print("Assigned value " + str(t[4]) + " to " + str(t[2]))
 def p_statement_assign(t):
-    '''assign : NUM NAME EOC
-              | TEXTO NAME EOC'''
+    '''assign : NUM NAME
+              | TEXTO NAME'''
     #print("Asigna: "+str(t[4]))
     if t[2] in variables:
         print("Error. Cannot declare two variables with the same name. " + str(t[2]) + " already exists.")
@@ -77,14 +76,14 @@ def p_statement_assign(t):
         print("Successfully declared " + str(t[2]))
 
 def p_statement_assign_array(t):
-    '''assign : NUM LBRACKET RBRACKET NAME EOC
-              | TEXTO LBRACKET RBRACKET NAME EOC'''
+    '''assign : NUM LBRACKET RBRACKET NAME
+              | TEXTO LBRACKET RBRACKET NAME'''
 
     variables[t[4]] = (str(t[1]) + "_ARR" , [])
 
 def p_arrayOP_append(t):
-    '''arrayOP : NAME APPEND LPAREN expression RPAREN EOC
-               | NAME APPEND LPAREN string_expression RPAREN EOC'''
+    '''arrayOP : NAME APPEND LPAREN expression RPAREN
+               | NAME APPEND LPAREN string_expression RPAREN'''
 
     if t[1] in variables:
         #My var exists. 
@@ -102,6 +101,7 @@ def p_expression_binop(t):
                   | expression MINUS expression
                   | expression TIMES expression
                   | expression DIVIDE expression'''
+
     if t[2] == '+'  : t[0] = t[1] + t[3]
     elif t[2] == '-': t[0] = t[1] - t[3]
     elif t[2] == '*': t[0] = t[1] * t[3]
@@ -120,7 +120,7 @@ def p_expression_for(t):
     print("Entro con "+str(t[1])+" "+str(t[2])+" "+str(t[3])+" ")
 
 def p_condition_si(t):
-    '''condition : SI LPAREN RPAREN LBRACE code RBRACE EOC
+    '''condition : SI LPAREN RPAREN LBRACE code RBRACE
     '''
                 
 
@@ -139,6 +139,9 @@ def p_string_expression_string(t):
     if (isinstance(t[1], str)):
         t[0] = t[1][1:-1]
 
+def p_sting_expression_name(t):
+    '''string_expression : NAME'''
+    t[0] = t[1]
 
 def p_expression_name(t):
     'expression : NAME'
