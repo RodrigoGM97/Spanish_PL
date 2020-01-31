@@ -1,5 +1,8 @@
 b.agrega(10);
 NUM a=7;
+NUM a;
+NUM c;
+c;
 a;
 NUM[]b;
 b;
@@ -7,3 +10,8 @@ b.agrega(5+8);
 b;
 b.agrega(6);
 b;
+b.agrega("hola");
+c = b;
+c;
+NUM[] d;
+d;

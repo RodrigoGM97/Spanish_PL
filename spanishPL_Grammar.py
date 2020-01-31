@@ -22,17 +22,57 @@ def p_statement_empty(t):
     '''empty : '''
     t[0] = None
 
-def p_statement_assign(t):
+def p_assign_existing_var_name(t):
+    '''
+    assign : NAME EQUALS NAME EOC
+    '''
+    if t[1] in variables and t[3] in variables:
+        #siguiente validación es checar sus conetidos:
+        #caso de strings: 
+        if variables[t[1]][0] == variables[t[3]][0]:
+            #cubre string-string, int-int, float-float, arr-arr
+            print("entered to var = var: " + str(variables[t[1]]) + " " + str(t[1]))
+            variables[t[1]] = variables[t[3]]
+        else:
+            print("Cannot assign " + str(variables[t[3]][0]) + " to " + str(variables[t[1]][0]))
+    else:
+        if not t[1] in variables:
+            print("Error: unknown variable " + str(t[1]))
+        else:
+            print("Error: unknown variable " + str(t[3]))
+def p_assign_existing_var(t):
+    '''assign : NAME EQUALS expression EOC
+    '''
+    #we need to distinguish between var types.
+    if t[1] in variables:
+        
+        variables[t[1]] = t[3]    
+    else:
+        print("Error: var " + t[1] + " has not been declared")
+def p_statement_assign_with_value(t):
     '''assign : NUM NAME EQUALS expression EOC statement
               | TEXTO NAME EQUALS string_expression EOC statement'''
     #print("Asigna: "+str(t[4]))
-    variables[t[2]] = t[4]
+    if t[2] in variables:
+        print("Error: Cannot declare two variables with the same name. Var " + str(t[2]) + " already exists.")
+        
+    else:
+        variables[t[2]] = (str(t[1]),t[4])
+        print("Assigned value " + str(t[4]) + " to " + str(t[2]))
+def p_statement_assign(t):
+    '''assign : NUM NAME EOC statement
+              | TEXTO NAME EOC statement'''
+    #print("Asigna: "+str(t[4]))
+    if t[2] in variables:
+        print("Error. Cannot declare two variables with the same name. " + str(t[2]) + " already exists.")
+    else:
+        variables[t[2]] = (str(t[1]),None)
 
 def p_statement_assign_array(t):
     '''assign : NUM LBRACKET RBRACKET NAME EOC statement
               | TEXTO LBRACKET RBRACKET NAME EOC statement'''
 
-    variables[t[4]] = []
+    variables[t[4]] = (str(t[1]) + "_ARR" , [])
 
 def p_arrayOP_append(t):
     '''arrayOP : NAME APPEND LPAREN expression RPAREN EOC statement
@@ -41,8 +81,11 @@ def p_arrayOP_append(t):
     if t[1] in variables:
         #My var exists. 
         print("My var does exist. I can append.")
-        variables[t[1]].append(t[4])
-        print("Appended " + str(t[4]) + " to " + str(t[1]))
+        if (variables[t[1]][0] == "NUM_ARR" and str(t[4]).isnumeric()) or (variables[t[1]][0] == "TEXTO_ARR" and isinstance(t[4], str)):
+            variables[t[1]][1].append(t[4])
+            print("Appended " + str(t[4]) + " to " + str(t[1]))
+        else:
+            print("Cannot append " + str(variables[t[1]][0]) + " with " + str(type(t[4])))
     else:
         print("Error: var b has not been declared")
         
