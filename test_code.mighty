@@ -4,7 +4,7 @@ SI ()
     {
         TEXTO hola2;
     };
-    TEXTO hola = hola2;
+    TEXTO hola;
 };
 b.agrega(8);
 NUM a=7;

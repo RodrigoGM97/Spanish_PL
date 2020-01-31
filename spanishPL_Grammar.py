@@ -17,6 +17,7 @@ def p_code(t):
     #print("I received " + str(t))
 def p_statement_expr(t):
     '''statement : empty
+                 | condition
                  | assign 
                  | arrayOP 
                  | expression EOC'''
@@ -120,7 +121,6 @@ def p_expression_for(t):
 
 def p_condition_si(t):
     '''condition : SI LPAREN RPAREN LBRACE code RBRACE EOC
-                 | SI LPAREN RPAREN LBRACE condition RBRACE EOC
     '''
                 
 
