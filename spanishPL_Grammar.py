@@ -9,12 +9,17 @@ precedence = (
 
 # dictionary of names
 variables = { }
-
+def p_code(t):
+    '''
+    code : statement
+         | statement code
+    '''
+    #print("I received " + str(t))
 def p_statement_expr(t):
     '''statement : empty
-                 | assign
-                 | arrayOP
-                 | expression EOC statement'''
+                 | assign 
+                 | arrayOP 
+                 | expression EOC'''
     
     #print(t)
 
@@ -47,11 +52,12 @@ def p_assign_existing_var(t):
     if t[1] in variables:
         
         variables[t[1]] = t[3]    
+        print("successfully assigned var value" )
     else:
         print("Error: var " + t[1] + " has not been declared")
 def p_statement_assign_with_value(t):
-    '''assign : NUM NAME EQUALS expression EOC statement
-              | TEXTO NAME EQUALS string_expression EOC statement'''
+    '''assign : NUM NAME EQUALS expression EOC
+              | TEXTO NAME EQUALS string_expression EOC'''
     #print("Asigna: "+str(t[4]))
     if t[2] in variables:
         print("Error: Cannot declare two variables with the same name. Var " + str(t[2]) + " already exists.")
@@ -60,23 +66,24 @@ def p_statement_assign_with_value(t):
         variables[t[2]] = (str(t[1]),t[4])
         print("Assigned value " + str(t[4]) + " to " + str(t[2]))
 def p_statement_assign(t):
-    '''assign : NUM NAME EOC statement
-              | TEXTO NAME EOC statement'''
+    '''assign : NUM NAME EOC
+              | TEXTO NAME EOC'''
     #print("Asigna: "+str(t[4]))
     if t[2] in variables:
         print("Error. Cannot declare two variables with the same name. " + str(t[2]) + " already exists.")
     else:
         variables[t[2]] = (str(t[1]),None)
+        print("Successfully declared " + str(t[2]))
 
 def p_statement_assign_array(t):
-    '''assign : NUM LBRACKET RBRACKET NAME EOC statement
-              | TEXTO LBRACKET RBRACKET NAME EOC statement'''
+    '''assign : NUM LBRACKET RBRACKET NAME EOC
+              | TEXTO LBRACKET RBRACKET NAME EOC'''
 
     variables[t[4]] = (str(t[1]) + "_ARR" , [])
 
 def p_arrayOP_append(t):
-    '''arrayOP : NAME APPEND LPAREN expression RPAREN EOC statement
-               | NAME APPEND LPAREN string_expression RPAREN EOC statement'''
+    '''arrayOP : NAME APPEND LPAREN expression RPAREN EOC
+               | NAME APPEND LPAREN string_expression RPAREN EOC'''
 
     if t[1] in variables:
         #My var exists. 
@@ -102,8 +109,7 @@ def p_expression_binop(t):
 def p_string_expression_binop(t):
     '''string_expression : string_expression PLUS string_expression'''
     if t[2] == '+'  : t[0] = t[1] + t[3]
-
-
+    
 def p_expression_uminus(t):
     'expression : MINUS expression %prec UMINUS'
     t[0] = -t[2]
@@ -112,8 +118,11 @@ def p_expression_for(t):
     'expression : FOR INT INT INT'
     print("Entro con "+str(t[1])+" "+str(t[2])+" "+str(t[3])+" ")
 
-def p_expression_si(t):
-    'expression : SI LPAREN RPAREN LBRACE statement RBRACE'
+def p_condition_si(t):
+    '''condition : SI LPAREN RPAREN LBRACE code RBRACE EOC
+                 | SI LPAREN RPAREN LBRACE condition RBRACE EOC
+    '''
+                
 
 def p_expression_group(t):
     'expression : LPAREN expression RPAREN'

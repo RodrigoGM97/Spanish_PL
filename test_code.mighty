@@ -1,4 +1,12 @@
-b.agrega(10);
+SI ()
+{
+    SI ()
+    {
+        TEXTO hola2;
+    };
+    TEXTO hola = hola2;
+};
+b.agrega(8);
 NUM a=7;
 NUM a;
 NUM c;

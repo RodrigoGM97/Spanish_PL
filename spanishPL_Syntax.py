@@ -2,7 +2,7 @@ tokens = (
     'NAME','INT', 'FLOAT', 'STRING', 'NUM', 'TEXTO',
     'PLUS','MINUS','TIMES','DIVIDE','EQUALS',
     'LPAREN','RPAREN','FOR', 'SI', 'LBRACE', 'RBRACE',
-    'EOC', 'LBRACKET', 'RBRACKET', 'APPEND'
+    'EOC', 'LBRACKET', 'RBRACKET', 'APPEND',
     )
 
 # Tokens
@@ -47,7 +47,7 @@ def t_FOR(t):
 def t_SI(t):
     r'SI'
     try:
-        print("Entro NUM")
+        print("Entro a SI")
     except ValueError:
         print("ERR")
     return t
