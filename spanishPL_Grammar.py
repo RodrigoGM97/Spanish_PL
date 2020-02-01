@@ -1,6 +1,7 @@
 # Parsing rules
 
 precedence = (
+    ('left', 'RPAREN', 'LBRACE'),
     ('left','PLUS','MINUS'),
     ('left','TIMES','DIVIDE'),
     ('right','UMINUS', 'EOC'),
@@ -14,7 +15,7 @@ def p_code(t):
     code : statement
          | statement code
     '''
-    #print("I received " + str(t))
+    
 def p_statement_expr(t):
     '''statement : empty
                  | condition EOC
@@ -120,14 +121,25 @@ def p_expression_for(t):
     print("Entro con "+str(t[1])+" "+str(t[2])+" "+str(t[3])+" ")
 
 def p_condition_si(t):
-    '''condition : SI LPAREN checkcond RPAREN LBRACE code RBRACE
+    '''condition : SI LPAREN checkcond vercond RPAREN LBRACE code RBRACE
     '''
+    print("t6 "+str(t[6]))
+    print("Condicion: "+str(t[3]))
+    if t[3] == False:
+        t[6] = ""
+
+
+    
 
 def p_checkcond_if_name(t):
     '''checkcond : NAME EQUALS EQUALS NAME'''
 
     if ( variables[t[1]] == variables[t[4]] ):
         print("Mismos")
+        t[0]= True
+    else:
+        t[0]=False
+    return t[0]
     #No terminado
 
 def p_checkcond_if_string(t):
@@ -135,6 +147,10 @@ def p_checkcond_if_string(t):
     #No terminado
     if ( variables[t[1]][1] == t[4][1:-1] ):
         print("Mismos")
+        t[0]= True
+    else:
+        t[0]=False
+    return t[0]
 
 
 def p_checkcond_if_num(t):
