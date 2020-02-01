@@ -1,11 +1,20 @@
-NUM i=7.8;
-i;
-NUM i2 = 7.8;
-i2 = i2 + i;
-i = i + 3;
-NUM c = 4 + 4;
-NUM d = c + 5;
-i;
-i2;
+NUM a;
+NUM c = 5;
+a = 4;
+NUM b;
+
+SI (a == 4)
+{
+    a=14;
+    SI (c==3)
+    {
+         c=15;
+    };
+    b = 3;
+    c = b;
+};
+d=6;
+a;
+b;
 c;
 d;

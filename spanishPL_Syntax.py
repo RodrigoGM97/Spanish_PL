@@ -2,7 +2,7 @@ tokens = (
     'NAME','INT', 'FLOAT', 'STRING', 'NUM', 'TEXTO',
     'PLUS','MINUS','TIMES','DIVIDE','EQUALS',
     'LPAREN','RPAREN','FOR', 'SI', 'LBRACE', 'RBRACE',
-    'EOC', 'LBRACKET', 'RBRACKET', 'APPEND',
+    'EOC', 'LBRACKET', 'RBRACKET', 'APPEND', 'MIENTRAS'
     )
 
 # Tokens

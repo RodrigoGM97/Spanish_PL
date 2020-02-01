@@ -16,7 +16,7 @@ if_false_vars = { }
 
 def p_code(t):
     '''
-    code : statement
+    code : empty
          | statement code
     '''
     
@@ -56,8 +56,9 @@ def p_assign_existing_var(t):
     '''
     #we need to distinguish between var types.
     if t[1] in variables:
-        
-        variables[t[1]] = t[3]    
+        print("before " + str(t[1]))
+        print(" so that had " + str(variables[t[1]]))
+        variables[t[1]] = (variables[t[1]][0],t[3])   
         print("successfully assigned var value" )
     else:
         print("Error: var " + t[1] + " has not been declared")
@@ -115,24 +116,25 @@ def p_expression_binop(t):
                   | expression DIVIDE expression'''
     print(type((1,2)))
     if(type(t[1]) == type((1,2)) and type(t[3]) != type((1,2))):
-        print("yep, I got a var as my first arg." + str(t[0]))             
-        if t[2] == '+' : t[0] = ('NUM',t[1][1] + t[3])
-        elif t[2] == '-': t[0] = ('NUM', t[1][1] - t[3])
-        elif t[2] == '*': t[0] = ('NUM', t[1][1] * t[3])
-        elif t[2] == '/': t[0] = ('NUM', t[1][1] / t[3])
+        print("yep, I got a var in left" + str(t[0]))             
+        if t[2] == '+' : t[0] = t[1][1] + t[3]
+        elif t[2] == '-': t[0] = t[1][1] - t[3]
+        elif t[2] == '*': t[0] = t[1][1] * t[3]
+        elif t[2] == '/': t[0] = t[1][1] / t[3]
     elif(type(t[1]) != type((1,2)) and type(t[3]) == type((1,2))):
-        print("yep, I got a var as my first arg." + str(t[0]))             
-        if t[2] == '+' : t[0] = ('NUM', t[1] + t[3][1])
-        elif t[2] == '-': t[0] = ('NUM', t[1] - t[3][1])
-        elif t[2] == '*': t[0] = ('NUM', t[1] * t[3][1])
-        elif t[2] == '/': t[0] = ('NUM', t[1] / t[3][1])
+        print("yep, I got a var in right" + str(t[0]))             
+        if t[2] == '+' : t[0] = t[1] + t[3][1]
+        elif t[2] == '-': t[0] = t[1] - t[3][1]
+        elif t[2] == '*': t[0] = t[1] * t[3][1]
+        elif t[2] == '/': t[0] =t[1] / t[3][1]
     elif(type(t[1]) == type((1,2)) and type(t[3]) == type((1,2))):
-        print("yep, I got a var as my first arg." + str(t[0]))             
-        if t[2] == '+' : t[0] = ('NUM', t[1][1] + t[3][1])
-        elif t[2] == '-': t[0] = ('NUM', t[1][1] - t[3][1])
-        elif t[2] == '*': t[0] =('NUM',  t[1][1] * t[3][1])
-        elif t[2] == '/': t[0] = ('NUM', t[1][1] / t[3][1])
+        print("yep, I got a var in both" + str(t[0]))             
+        if t[2] == '+' : t[0] = t[1][1] + t[3][1]
+        elif t[2] == '-': t[0] = t[1][1] - t[3][1]
+        elif t[2] == '*': t[0] =t[1][1] * t[3][1]
+        elif t[2] == '/': t[0] = t[1][1] / t[3][1]
     else:
+        print("I got no vars")
         if t[2] == '+' : t[0] = t[1] + t[3]
         elif t[2] == '-': t[0] = t[1] - t[3]
         elif t[2] == '*': t[0] = t[1] * t[3]
@@ -154,7 +156,24 @@ def p_expression_for(t):
 def p_condition_si(t):
     '''condition : SI LPAREN checkcond vercond RPAREN LBRACE code docond RBRACE
     '''
-    
+#def p_condition_si(t):
+#    '''
+#        condition : empty
+#                    | si_code SI LPAREN checkcond vercond RPAREN
+#    '''
+#    if (t[4]):
+#        return True
+#    else:
+#        return False
+#def p_condition_si_code(t):
+#    '''
+#        si_code : LBRACE code RBRACE condition
+#    '''
+#    if (t[4]):
+#        print("OK TO EXECUTE CODE")
+#    else:
+#        print("SHOULD NOT EXECUTE CODE")
+#        return
 
 def p_docond(t):
     '''docond :'''
@@ -195,10 +214,11 @@ def p_checkcond_if_num(t):
         t[0]=False
     return t[0]
 
-
-
+    
 def p_expression_group(t):
-    'expression : LPAREN expression RPAREN'
+    '''
+    expression : LPAREN expression RPAREN
+    '''
     t[0] = t[2]
 
 def p_expression_number(t):
