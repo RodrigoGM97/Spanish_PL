@@ -2,9 +2,13 @@ NUM i=7.8;
 TEXTO a="hola";
 i;
 a;
-SI (a == "hola2")
+SI (a == "hola")
 {
-    TEXTO hola = "hola2";
-    hola;
+    SI (i == 0) {
+        TEXTO hola = "hola2";
+        hola;
+    };
+    TEXTO b = "b";
 };
 hola;
+b;

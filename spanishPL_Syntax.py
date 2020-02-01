@@ -38,48 +38,24 @@ def t_INT(t):
 
 def t_FOR(t):
     r'FOR'
-    try:
-        print("asdf")
-    except ValueError:
-        print("ERR")
     return t
 
 def t_SI(t):
     r'SI'
-    try:
-        print("Entro a SI")
-    except ValueError:
-        print("ERR")
     return t
 
 def t_NUM(t):
     r'NUM'
-    '''
-    try:
-        print("Entro SI sintaxis")
-    except ValueError:
-        print("ERR")
-        '''
+
     return t
 
 def t_TEXTO(t):
     r'TEXTO'
-    '''
-    try:
-        print("Entro TEXTO sintaxis")
-    except ValueError:
-        print("ERR")
-    '''
     return t
 
 def t_APPEND(t):
     r'.agrega'
-    '''
-    try:
-        print("Entro append sintaxis")
-    except ValueError:
-        print("ERR")
-    '''    
+
     return t
 
 # Ignored characters

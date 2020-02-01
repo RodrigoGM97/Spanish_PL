@@ -1,4 +1,5 @@
 # Parsing rules
+import copy
 
 precedence = (
     ('left', 'RPAREN', 'LBRACE'),
@@ -10,6 +11,9 @@ precedence = (
 
 # dictionary of names
 variables = { }
+
+if_false_vars = { }
+
 def p_code(t):
     '''
     code : statement
@@ -121,35 +125,33 @@ def p_expression_for(t):
     print("Entro con "+str(t[1])+" "+str(t[2])+" "+str(t[3])+" ")
 
 def p_condition_si(t):
-    '''condition : SI LPAREN checkcond vercond RPAREN LBRACE code RBRACE
+    '''condition : SI LPAREN checkcond vercond RPAREN LBRACE code docond RBRACE
     '''
+    
 
+def p_docond(t):
+    '''docond :'''
+    global if_false_vars, variables
+    if t[-5] == False:
+        variables = if_false_vars
 
 def p_condition_vercond(t):
     '''vercond :'''
-
-    if t[-1] == False:
-        print("False")
-    else:
-        print("True")
-    
+    global if_false_vars
+    if_false_vars = copy.copy(variables)
 
 def p_checkcond_if_name(t):
     '''checkcond : NAME EQUALS EQUALS NAME'''
 
     if ( variables[t[1]] == variables[t[4]] ):
-        print("Mismos")
         t[0]= True
     else:
         t[0]=False
     return t[0]
-    #No terminado
 
 def p_checkcond_if_string(t):
     '''checkcond : NAME EQUALS EQUALS STRING'''
-    #No terminado
     if ( variables[t[1]][1] == t[4][1:-1] ):
-        print("Mismos")
         t[0]= True
     else:
         t[0]=False
@@ -161,7 +163,10 @@ def p_checkcond_if_num(t):
                   | NAME EQUALS EQUALS FLOAT'''
     #No terminado
     if ( variables[t[1]][1] == t[4] ):
-        print("Mismos")
+        t[0]= True
+    else:
+        t[0]=False
+    return t[0]
 
 
 
