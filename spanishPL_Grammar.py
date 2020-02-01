@@ -123,12 +123,15 @@ def p_expression_for(t):
 def p_condition_si(t):
     '''condition : SI LPAREN checkcond vercond RPAREN LBRACE code RBRACE
     '''
-    print("t6 "+str(t[6]))
-    print("Condicion: "+str(t[3]))
-    if t[3] == False:
-        t[6] = ""
 
 
+def p_condition_vercond(t):
+    '''vercond :'''
+
+    if t[-1] == False:
+        print("False")
+    else:
+        print("True")
     
 
 def p_checkcond_if_name(t):
