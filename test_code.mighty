@@ -4,6 +4,8 @@ NUM i2 = 7.8;
 i2 = i2 + i;
 i = i + 3;
 NUM c = 4 + 4;
+NUM d = c + 5;
 i;
 i2;
 c;
+d;

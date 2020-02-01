@@ -69,7 +69,11 @@ def p_statement_assign_with_value(t):
         print("Error: Cannot declare two variables with the same name. Var " + str(t[2]) + " already exists.")
         
     else:
-        variables[t[2]] = (str(t[1]),t[4])
+        if type(t[4]) == type((1,2)):
+            #I already have a tuple.
+            variables[t[2]] = t[4]
+        else:
+            variables[t[2]] = (str(t[1]),t[4])
 def p_statement_assign(t):
     '''assign : NUM NAME
               | TEXTO NAME'''
