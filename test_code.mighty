@@ -1,14 +1,9 @@
 NUM i=7.8;
-TEXTO a="hola";
 i;
-a;
-SI (a == "hola")
-{
-    SI (i == 0) {
-        TEXTO hola = "hola2";
-        hola;
-    };
-    TEXTO b = "b";
-};
-hola;
-b;
+NUM i2 = 7.8;
+i2 = i2 + i;
+i = i + 3;
+NUM c = 4 + 4;
+i;
+i2;
+c;

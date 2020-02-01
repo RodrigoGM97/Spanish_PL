@@ -100,17 +100,40 @@ def p_arrayOP_append(t):
             print("Cannot append " + str(variables[t[1]][0]) + " with " + str(type(t[4])))
     else:
         print("Error: var b has not been declared")
-        
+
+
+    
+       
 def p_expression_binop(t):
     '''expression : expression PLUS expression
                   | expression MINUS expression
                   | expression TIMES expression
                   | expression DIVIDE expression'''
+    print(type((1,2)))
+    if(type(t[1]) == type((1,2)) and type(t[3]) != type((1,2))):
+        print("yep, I got a var as my first arg." + str(t[0]))             
+        if t[2] == '+' : t[0] = ('NUM',t[1][1] + t[3])
+        elif t[2] == '-': t[0] = ('NUM', t[1][1] - t[3])
+        elif t[2] == '*': t[0] = ('NUM', t[1][1] * t[3])
+        elif t[2] == '/': t[0] = ('NUM', t[1][1] / t[3])
+    elif(type(t[1]) != type((1,2)) and type(t[3]) == type((1,2))):
+        print("yep, I got a var as my first arg." + str(t[0]))             
+        if t[2] == '+' : t[0] = ('NUM', t[1] + t[3][1])
+        elif t[2] == '-': t[0] = ('NUM', t[1] - t[3][1])
+        elif t[2] == '*': t[0] = ('NUM', t[1] * t[3][1])
+        elif t[2] == '/': t[0] = ('NUM', t[1] / t[3][1])
+    elif(type(t[1]) == type((1,2)) and type(t[3]) == type((1,2))):
+        print("yep, I got a var as my first arg." + str(t[0]))             
+        if t[2] == '+' : t[0] = ('NUM', t[1][1] + t[3][1])
+        elif t[2] == '-': t[0] = ('NUM', t[1][1] - t[3][1])
+        elif t[2] == '*': t[0] =('NUM',  t[1][1] * t[3][1])
+        elif t[2] == '/': t[0] = ('NUM', t[1][1] / t[3][1])
+    else:
+        if t[2] == '+' : t[0] = t[1] + t[3]
+        elif t[2] == '-': t[0] = t[1] - t[3]
+        elif t[2] == '*': t[0] = t[1] * t[3]
+        elif t[2] == '/': t[0] = t[1] / t[3]
 
-    if t[2] == '+'  : t[0] = t[1] + t[3]
-    elif t[2] == '-': t[0] = t[1] - t[3]
-    elif t[2] == '*': t[0] = t[1] * t[3]
-    elif t[2] == '/': t[0] = t[1] / t[3]
 
 def p_string_expression_binop(t):
     '''string_expression : string_expression PLUS string_expression'''
