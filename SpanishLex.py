@@ -35,11 +35,12 @@ reserved = {
     'bool': "BOOL",
     'true': 'TRUE',
     'false': 'FALSE',
+    'noes' : 'NOTEQUAL'
 }
 
 # Juicy's tokens
 tokens = (
-             'NOTEQUAL',
+             #'NOTEQUAL',
              'GE',
              'LE',
              'ASSIGN',
@@ -51,7 +52,7 @@ tokens = (
              'SI'            
          ) + tuple(reserved.values())
 #print(tokens)
-t_NOTEQUAL = r'<>'
+#t_NOTEQUAL = r'<>'
 t_ASSIGN = r':='
 
 literals = (

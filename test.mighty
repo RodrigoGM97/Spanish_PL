@@ -3,7 +3,7 @@
    n := "n";
    
    
-   si (1 = 1) {
+   si (1 noes 1) {
       imprime(n, "hola");
    }
    sino {
@@ -12,14 +12,4 @@
    }
 
     n := "";
-   
-    mientras (n = "") {
-        n := "5";
-        n := to_int(n);
-
-        si (err() = 1) {
-            n := "";
-            imprime("Not an integer!");
-        }
-    }
 }
