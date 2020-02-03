@@ -34,7 +34,8 @@ reserved = {
     'num': 'NUM',
     'texto': 'TEXTO',
     'noes' : 'NOTEQUAL',
-    'agrega': 'APPEND'
+    'agrega': 'APPEND',
+    'obtiene': 'GET'
 }
 
 # Juicy's tokens

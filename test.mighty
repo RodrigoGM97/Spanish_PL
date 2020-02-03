@@ -17,7 +17,8 @@ m := "h" + n;
 imprime(m);
 
 texto[]arr;
-rr.agrega("hooa");
 arr.agrega("hooa");
 arr.agrega("hoo1a");
+texto x := arr.obtiene(1);
 imprime(arr);
+imprime(x);

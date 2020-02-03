@@ -559,6 +559,11 @@ def p_expr_arr_append(p):
         print("Error: variable no declarada: ",p[1]," en linea ",parser.symstack[-1].lineno + 1)
         exit()
 
+def p_expr_arr_get(p):
+    '''expr : SYMBOL '.' GET '(' expr ')'
+    '''
+    p[0] = variables[p[1]][p[5]]
+    
 
 def p_expr_or_empty(p):
     """
