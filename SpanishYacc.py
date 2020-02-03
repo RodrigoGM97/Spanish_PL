@@ -79,10 +79,11 @@ def p_p(p):
 
 def p_stmt(p):
     """
-    stmt : PRINT '(' print_arguments ')' ';'
-         | IF '(' print_arguments ')' ';'
-        
+    stmt : IMPRIME '(' print_arguments ')' ';'
     """
+
+
+
     if not running[-1]:
         return
 
@@ -115,10 +116,8 @@ def p_print_arguments(p):
 
 def p_stmt_if(p):
     """
-    stmt : IF '(' boolexpr ')' '{' ifA p ifB '}'
-         | IF '(' boolexpr ')' '{' ifA p ifB '}' ELSE '{' ifC p ifB '}'
-         
-    """
+    stmt : SI '(' boolexpr ')' '{' ifA p ifB '}'
+         | SI '(' boolexpr ')' '{' ifA p ifB '}' SINO '{' ifC p ifB '}' """
     pass
 
 
@@ -158,7 +157,7 @@ def p_ifC(p):
 
 def p_stmt_while(p):
     """
-    stmt : WHILE '(' boolexpr ')' '{' whileA p whileB '}'
+    stmt : MIENTRAS '(' boolexpr ')' '{' whileA p whileB '}'
     """
     pass
 
@@ -564,43 +563,6 @@ def p_expr_to_float(p):
             runtime_err = 1
         else:
             runtime_err = 0
-
-
-def p_expr_input(p):
-    """
-    expr : INPUT '(' expr ')'
-         | INPUT '(' ')'
-    """
-    if not running[-1]:
-        return
-
-    prompt = str(p[3]) if len(p) > 4 else ''
-    p[0] = input(prompt)
-
-
-def p_expr_str_index(p):
-    """
-    expr : expr '[' expr ']'
-    """
-    if not running[-1]:
-        return
-
-    if p[1] is None or p[2] is None:
-        return
-
-    if type(p[1]) is not str:
-        print("Value is not indexable")
-    else:
-        if type(p[3]) is not int:
-            print("Index is not 'int' ")
-        # Everything is ok
-        else:
-            # Check if index is out of range
-            if p[3] >= len(p[1]):
-                print("Index is out of range")
-            else:
-                p[0] = p[1][p[3]]
-
 
 def p_expr_assign(p):
     """

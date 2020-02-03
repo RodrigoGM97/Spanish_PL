@@ -20,11 +20,10 @@ def token_newline(t):
 
 # Juicy's reserved keywords
 reserved = {
-    'if': 'IF',
-    'else': 'ELSE',
-    'while': 'WHILE',
-    'input': 'INPUT',
-    'print': 'PRINT',
+    'si': 'SI',
+    'sino': 'SINO',
+    'mientras': 'MIENTRAS',
+    'imprime': 'IMPRIME',
     'len': 'LEN',
     'to_str': 'TO_STR',
     'err': 'ERR',
@@ -35,7 +34,7 @@ reserved = {
     'not': 'NOT',
     'bool': "BOOL",
     'true': 'TRUE',
-    'false': 'FALSE'
+    'false': 'FALSE',
 }
 
 # Juicy's tokens
@@ -48,9 +47,10 @@ tokens = (
              'FLOAT',
              'INT',
              'STRING',
-             'MANUEL'
+             'IMPRIME',
+             'SI'            
          ) + tuple(reserved.values())
-print(tokens)
+#print(tokens)
 t_NOTEQUAL = r'<>'
 t_ASSIGN = r':='
 
@@ -76,10 +76,6 @@ literals = (
 
 t_GE = r'>='
 t_LE = r'<='
-
-def t_MANUEL(t):
-    r'MANUEL'
-    return t
 
 # Read in a float. This rule has to be done before the int rule.
 def t_FLOAT(t):

@@ -1,8 +1,25 @@
-
 {
  
    n := "n";
    
-   print(n, "hola");
-   IF(n,"hola");
+   
+   si (1 = 1) {
+      imprime(n, "hola");
+   }
+   sino {
+      imprime("SINO");
+      n := "n";
+   }
+
+    n := "";
+   
+    mientras (n = "") {
+        n := "5";
+        n := to_int(n);
+
+        si (err() = 1) {
+            n := "";
+            imprime("Not an integer!");
+        }
+    }
 }
