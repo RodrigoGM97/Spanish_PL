@@ -34,6 +34,7 @@ reserved = {
     'num': 'NUM',
     'texto': 'TEXTO',
     'noes' : 'NOTEQUAL',
+    'agrega': 'APPEND'
 }
 
 # Juicy's tokens
@@ -71,6 +72,7 @@ literals = (
     ':',
     ';',
     ',',
+    '.'
 )
 
 t_GE = r'>='

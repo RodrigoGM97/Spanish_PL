@@ -537,8 +537,28 @@ def p_expr_create(p):
         print("Not a correct variable type in line",  parser.symstack[-1].lineno + 1)
         exit()
 
+def p_expr_create_arr(p):
+    ''' expr : NUM '[' ']' SYMBOL
+             | TEXTO '[' ']' SYMBOL
+    '''
+    if p[1] == "num":
+        variables[p[4]] = [0]
+    elif p[1] == "texto":
+        variables[p[4]] = [""]
 
-
+def p_expr_arr_append(p):
+    '''expr : SYMBOL '.' APPEND '(' expr ')'
+    '''
+    if p[1] in variables:
+        if isinstance(p[1][0], str) and isinstance(p[5], str):
+            variables[p[1]].append(p[5])
+        elif isinstance(p[1][0], (int, float)) and isinstance(p[5], (int, float)):
+            variables[p[1]].append(p[5])            
+        else:
+            print("Error: Tipo de dato incorrecto a la hora de agregar a arreglo")    
+    else:
+        print("Error: var b has not been declared")
+    
 
 def p_expr_str_subscript(p):
     """

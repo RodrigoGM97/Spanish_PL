@@ -15,3 +15,8 @@ sino {
 texto m := "";
 m := "h" + n;
 imprime(m);
+
+texto[]arr;
+arr.agrega("hooa");
+arr.agrega("hoo1a");
+imprime(arr);
