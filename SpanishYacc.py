@@ -553,9 +553,11 @@ def p_expr_arr_append(p):
         elif isinstance(p[1][0], (int, float)) and isinstance(p[5], (int, float)):
             variables[p[1]].append(p[5])
         else:
-            print("Error: Tipo de dato incorrecto a la hora de agregar a arreglo")    
+            print("Error: Tipo de dato incorrecto a la hora de agregar a arreglo")
+            exit()    
     else:
         print("Error: variable no declarada: ",p[1]," en linea ",parser.symstack[-1].lineno + 1)
+        exit()
 
 
 def p_expr_or_empty(p):
