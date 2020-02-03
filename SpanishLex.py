@@ -31,6 +31,8 @@ reserved = {
     'to_float': 'TO_FLOAT',
     'y': 'AND',
     'o': 'OR',
+    'num': 'NUM',
+    'texto': 'TEXTO',
     'noes' : 'NOTEQUAL',
 }
 

@@ -510,9 +510,34 @@ def p_expr_assign(p):
     if not running[-1]:
         return
 
-    if p[3] is not None:
+    if (isinstance(variables[p[1]], str) and isinstance(p[3], str)):
         variables[p[1]] = p[3]
-        p[0] = p[3]
+    elif (isinstance(variables[p[1]], (int, float)) and isinstance(p[3], (int, float))):
+        variables[p[1]] = p[3]
+    else:
+        print("Not a correct variable type in line",  parser.symstack[-1].lineno + 1)
+        exit()
+
+def p_expr_create(p):
+    """
+    expr : TEXTO SYMBOL ASSIGN expr
+         | NUM SYMBOL ASSIGN expr
+    """
+    if not running[-1]:
+        return
+    if( p[1] == 'num' and type(p[4]) in {int,float}):
+        if p[4] is not None:
+            variables[p[2]] = p[4]
+            p[0] = p[4]
+    elif (p[1] == 'texto' and type(p[4]) in {str}):
+        if p[4] is not None:
+            variables[p[2]] = p[4]
+            p[0] = p[4]
+    else:
+        print("Not a correct variable type in line",  parser.symstack[-1].lineno + 1)
+        exit()
+
+
 
 
 def p_expr_str_subscript(p):

@@ -1,19 +1,17 @@
 
-n := "n";
-
+texto n := "n";
+num nume := 0;
+nume := 1 + 1;
+n := "hoa" + "a";
 
 si (1 noes 1 y 1 = 1) {
    imprime(n, "hola");
 }
 sino {
    imprime("SINO");
-   n := "n";
+   texto n := "n";
 }
 
-n := "";
-
-m := "";
-mientras (m = "" y m noes "a") {
-   m := 5;
-   imprime("YA");
-}
+texto m := "";
+m := "h" + n;
+imprime(m);
