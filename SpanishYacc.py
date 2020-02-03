@@ -122,10 +122,8 @@ def p_ifA(p):
     ifA :
     """
     global running
-    # If current state is not running
     if not running[-1]:
         running.append(False)
-    # Push evaluated value as running state
     else:
         running.append(p[-3])
 
@@ -143,10 +141,8 @@ def p_ifC(p):
     ifC :
     """
     global running
-    # If current state is not running
     if not running[-1]:
         running.append(False)
-    # Push not(evaluated value) as running state
     else:
         running.append(not p[-9])
 
@@ -389,9 +385,7 @@ def p_expr_symbol(p):
     if not running[-1]:
         return
 
-    # Get symbol's value
     sym_val = get_symbol(p, 1)
-    # If symbol does not exist
     if sym_val is not None:
         p[0] = sym_val
 
@@ -428,78 +422,6 @@ def p_expr_unary_minus(p):
     if p[2] is not None:
         p[0] = -p[2]
 
-
-def p_expr_len(p):
-    """
-    expr : LEN '(' expr ')'
-    """
-    if not running[-1]:
-        return
-
-    if p[3] is not None:
-        if type(p[3]) is str:
-            p[0] = len(p[3])
-        else:
-            print("'len' only accepts string ")
-
-
-def p_expr_to_str(p):
-    """
-    expr : TO_STR '(' expr ')'
-    """
-    if not running[-1]:
-        return
-
-    if p[3] is not None:
-        p[0] = str(p[3])
-
-
-def p_expr_err(p):
-    """
-    expr : ERR '(' ')'
-    """
-    global runtime_err
-
-    if not running[-1]:
-        return
-
-    p[0] = runtime_err
-
-
-def p_expr_to_int(p):
-    """
-    expr : TO_INT '(' expr ')'
-    """
-    global runtime_err
-
-    if not running[-1]:
-        return
-
-    if p[3] is not None:
-        try:
-            p[0] = int(p[3])
-        except ValueError:
-            runtime_err = 1
-        else:
-            runtime_err = 0
-
-
-def p_expr_to_float(p):
-    """
-    expr : TO_FLOAT '(' expr ')'
-    """
-    global runtime_err
-
-    if not running[-1]:
-        return
-
-    if p[3] is not None:
-        try:
-            p[0] = float(p[3])
-        except ValueError:
-            runtime_err = 1
-        else:
-            runtime_err = 0
 
 def p_expr_assign(p):
     """
