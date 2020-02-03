@@ -1,15 +1,19 @@
-{
- 
-   n := "n";
-   
-   
-   si (1 noes 1) {
-      imprime(n, "hola");
-   }
-   sino {
-      imprime("SINO");
-      n := "n";
-   }
 
-    n := "";
+n := "n";
+
+
+si (1 noes 1 y 1 = 1) {
+   imprime(n, "hola");
+}
+sino {
+   imprime("SINO");
+   n := "n";
+}
+
+n := "";
+
+m := "";
+mientras (m = "" y m noes "a") {
+   m := 5;
+   imprime("YA");
 }

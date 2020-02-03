@@ -55,14 +55,12 @@ precedence = (
     ('right', 'UMINUS'),  # Unary minus operator
     ('left', 'OR'),
     ('left', 'AND'),
-    ('right', 'NOT'),
-    ('right', 'BOOL'),
 )
 
 
 # Program's starting point
 def p_s(p):
-    """s : '{' p '}'"""
+    """s : p"""
     pass
 
 
@@ -189,64 +187,17 @@ def p_whileB(p):
 def p_boolexpr_and(p):
     """
     boolexpr : boolexpr AND boolexpr
-    """
-    if p[1] is not None and p[3] is not None:
-        p[0] = p[1] and p[3]
-
-
-def p_boolexpr_or(p):
-    """
-    boolexpr : boolexpr OR boolexpr
+             | boolexpr OR boolexpr
     """
     if not running[-1]:
         return
 
-    if p[1] is not None and p[3] is not None:
-        p[0] = p[1] or p[3]
-
-
-def p_boolexpr_not(p):
-    """
-    boolexpr : NOT boolexpr
-    """
-    if not running[-1]:
-        return
-
-    if p[2] is not None:
-        p[0] = not p[2]
-
-
-def p_boolexpr_bool(p):
-    """
-    boolexpr : BOOL expr
-    """
-    if not running[-1]:
-        return
-
-    p[0] = boolexpr(p[2])
-
-
-def p_boolexpr_bool_boolexpr(p):
-    """
-    boolexpr : BOOL boolexpr
-    """
-    if not running[-1]:
-        return
-
-    p[0] = p[2]
-
-
-def p_boolexpr_not_expr(p):
-    """
-    boolexpr : NOT expr
-    """
-    if not running[-1]:
-        return
-
-    expr_bool = boolexpr(p[2])
-    if expr_bool is not None:
-        p[0] = not expr_bool
-
+    if p[2] == "y":
+        if p[1] is not None and p[3] is not None:
+            p[0] = p[1] and p[3]
+    elif p[2] == "o":
+        if p[1] is not None and p[3] is not None:
+            p[0] = p[1] or p[3]
 
 def p_boolexpr_paran(p):
     """
@@ -257,18 +208,6 @@ def p_boolexpr_paran(p):
 
     if p[2] is not None:
         p[0] = p[2]
-
-
-def p_boolexpr_true_false(p):
-    """
-    boolexpr : TRUE
-             | FALSE
-    """
-    if not running[-1]:
-        return
-
-    p[0] = True if p[1] == 'true' else False
-
 
 def p_boolexpr_comparison(p):
     """

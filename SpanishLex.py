@@ -29,13 +29,9 @@ reserved = {
     'err': 'ERR',
     'to_int': 'TO_INT',
     'to_float': 'TO_FLOAT',
-    'and': 'AND',
-    'or': 'OR',
-    'not': 'NOT',
-    'bool': "BOOL",
-    'true': 'TRUE',
-    'false': 'FALSE',
-    'noes' : 'NOTEQUAL'
+    'y': 'AND',
+    'o': 'OR',
+    'noes' : 'NOTEQUAL',
 }
 
 # Juicy's tokens
