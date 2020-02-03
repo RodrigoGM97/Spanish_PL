@@ -80,8 +80,6 @@ def p_stmt(p):
     stmt : IMPRIME '(' print_arguments ')' ';'
     """
 
-
-
     if not running[-1]:
         return
 
@@ -515,7 +513,7 @@ def p_expr_assign(p):
     elif (isinstance(variables[p[1]], (int, float)) and isinstance(p[3], (int, float))):
         variables[p[1]] = p[3]
     else:
-        print("Not a correct variable type in line",  parser.symstack[-1].lineno + 1)
+        print("Tipo de variable incorrecto en linea ",  parser.symstack[-1].lineno + 1)
         exit()
 
 def p_expr_create(p):
@@ -534,7 +532,7 @@ def p_expr_create(p):
             variables[p[2]] = p[4]
             p[0] = p[4]
     else:
-        print("Not a correct variable type in line",  parser.symstack[-1].lineno + 1)
+        print("Tipo de variable incorrecto en linea ",  parser.symstack[-1].lineno + 1)
         exit()
 
 def p_expr_create_arr(p):
@@ -553,35 +551,11 @@ def p_expr_arr_append(p):
         if isinstance(p[1][0], str) and isinstance(p[5], str):
             variables[p[1]].append(p[5])
         elif isinstance(p[1][0], (int, float)) and isinstance(p[5], (int, float)):
-            variables[p[1]].append(p[5])            
+            variables[p[1]].append(p[5])
         else:
             print("Error: Tipo de dato incorrecto a la hora de agregar a arreglo")    
     else:
-        print("Error: var b has not been declared")
-    
-
-def p_expr_str_subscript(p):
-    """
-    expr : expr '[' expr_or_empty ':' expr_or_empty ']'
-    """
-    if not running[-1]:
-        return
-
-    if p[1] is None:
-        return
-
-    if type(p[1]) is not str:
-        print("Value is not subscriptable in line ")
-    else:
-        if p[3] is not None and type(p[3]) is not int:
-            print("Index is not 'int' in line")
-            return
-        if p[5] is not None and type(p[5]) is not int:
-            print("Index is not 'int'")
-            return
-        # Everything is ok
-        else:
-            p[0] = p[1][p[3]:p[5]]
+        print("Error: variable no declarada: ",p[1]," en linea ",parser.symstack[-1].lineno + 1)
 
 
 def p_expr_or_empty(p):
