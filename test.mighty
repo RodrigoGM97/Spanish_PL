@@ -1,0 +1,8 @@
+
+{
+ 
+   n := "n";
+   
+   print(n, "hola");
+   IF(n,"hola");
+}
