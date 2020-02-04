@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from sys import exit, argv, stdin
 from SpanishYacc import yacc
 

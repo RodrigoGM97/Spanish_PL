@@ -1,4 +1,3 @@
-
 from re import UNICODE as RE_UNICODE
 import ply.lex as lex
 
