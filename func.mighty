@@ -1,0 +1,9 @@
+num var1 <- 1;
+num var2 <- 2;
+mientras (var1 = 2)
+{
+    imprime("queso");
+}
+func funcioncita {
+    imprime("hola crayola");        
+}

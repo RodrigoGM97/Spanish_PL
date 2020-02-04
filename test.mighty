@@ -37,6 +37,6 @@ numeritos.agrega(1);
 numeritos.agrega(10);
 imprime(numeritos);
 imprime(lon(numeritos));
-arr.alv(4);
+arr.alv(1);
 imprime(arr);
-arr.agrega(1);
+arr.agrega("1");
