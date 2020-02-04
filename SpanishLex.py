@@ -24,18 +24,19 @@ reserved = {
     'sino': 'SINO',
     'mientras': 'MIENTRAS',
     'imprime': 'IMPRIME',
-    'len': 'LEN',
+    'lon': 'LEN',
     'to_str': 'TO_STR',
     'err': 'ERR',
-    'to_int': 'TO_INT',
-    'to_float': 'TO_FLOAT',
+
     'y': 'AND',
     'o': 'OR',
     'num': 'NUM',
     'texto': 'TEXTO',
     'noes' : 'NOTEQUAL',
     'agrega': 'APPEND',
-    'obtiene': 'GET'
+    'obtiene': 'GET',
+    'alv' : 'ALV'
+    
 }
 
 # Juicy's tokens
@@ -53,7 +54,7 @@ tokens = (
          ) + tuple(reserved.values())
 #print(tokens)
 #t_NOTEQUAL = r'<>'
-t_ASSIGN = r':='
+t_ASSIGN = r'<-'
 
 literals = (
     '>',

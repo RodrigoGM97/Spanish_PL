@@ -1,24 +1,42 @@
 
-texto n := "n";
-num nume := 0;
-nume := 1 + 1;
-n := "hoa" + "a";
+texto n <- "n";
+num nume <- 0;
+nume <- 1 + 1;
+n <- "hoa" + "a";
 
 si (1 noes 1 y 1 = 1) {
    imprime(n, "hola");
 }
 sino {
    imprime("SINO");
-   texto n := "n";
+   texto n <- "n";
 }
 
-texto m := "";
-m := "h" + n;
+texto m <- "";
+m <- "h" + n;
 imprime(m);
 
-texto[]arr;
+texto[] arr;
+texto x <- arr.obtiene(0);
+imprime(x, " era mi x original");
 arr.agrega("hooa");
+texto x3 <- arr.obtiene(0);
+imprime(x3, " es el x2");
 arr.agrega("hoo1a");
-texto x := arr.obtiene(1);
+texto x2 <- arr.obtiene(1);
+imprime(x2, " es el x2");
+texto b <- "hola crayola";
+imprime("la maravillosa b vale ", b);
 imprime(arr);
 imprime(x);
+num[] numeritos;
+num test<- numeritos.obtiene(0);
+imprime("esto es un intento");
+imprime(test, "era mi test");
+numeritos.agrega(1);
+numeritos.agrega(10);
+imprime(numeritos);
+imprime(lon(numeritos));
+arr.alv(4);
+imprime(arr);
+arr.agrega(1);

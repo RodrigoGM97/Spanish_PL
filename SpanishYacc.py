@@ -1,3 +1,4 @@
+import sys
 import ply.yacc as yacc
 from SpanishLex import tokens
 
@@ -37,12 +38,14 @@ running = [True]
 # Get's a symbol from variables dictionary and shows error if not exists
 def get_symbol(p, i):
     # Get symbol's value form variables dictionary
-    symbol_val = variables.get(p[i], None)
-    # If symbol does not exist
-    if symbol_val is None:
+#    symbol_val = variables.get(p[i], None)
+#    # If symbol does not exist
+#    print("en p traigo " + str(p[i]))
+#    if symbol_val is None:
+    if not p[i] in variables:
         print("Variable is not defined")
     else:
-        return symbol_val
+        return variables[p[i]]
 
     return None
 
@@ -83,8 +86,7 @@ def p_stmt(p):
     if not running[-1]:
         return
 
-    if p[3] is not None:
-        print(p[3])
+    print(p[3])
 
 
 def p_print_arguments(p):
@@ -153,7 +155,17 @@ def p_stmt_while(p):
     """
     pass
 
-
+def p_alv(p):
+    """
+    expr : SYMBOL '.' ALV '(' expr ')'
+    """
+    
+    if p[1] in variables and type(variables[p[1]]) == list and len(variables[p[1]]) > p[5]:
+        del variables[p[1]][p[5]]
+    else:
+        print("Error: al remover el elemento de ", str(p[1]))
+        sys.exit(-1)
+        
 def p_whileA(p):
     """
     whileA :
@@ -401,6 +413,14 @@ def p_expr(p):
 
     p[0] = p[1]
 
+def p_get_length(p):
+    """
+    expr : LEN '(' SYMBOL ')'
+    """
+    if type(variables[p[3]]) in {str, list}:
+        p[0] = len(variables[p[3]])
+    else:
+        print("Error: No es posible obtener la longitud de un numero en la línea " ,parser.symstack[-1].lineno + 1)
 
 def p_expr_paran(p):
     """
@@ -436,7 +456,7 @@ def p_expr_assign(p):
         variables[p[1]] = p[3]
     else:
         print("Tipo de variable incorrecto en linea ",  parser.symstack[-1].lineno + 1)
-        exit()
+        sys.exit(-1)
 
 def p_expr_create(p):
     """
@@ -445,46 +465,70 @@ def p_expr_create(p):
     """
     if not running[-1]:
         return
-    if( p[1] == 'num' and type(p[4]) in {int,float}):
-        if p[4] is not None:
-            variables[p[2]] = p[4]
-            p[0] = p[4]
+    if( p[1] == 'num' and type(p[4]) in {int,float}) or p[4] == None:
+    
+        variables[p[2]] = p[4]
+        #print("Voy a meter el valor de " + str(p[4]) + " en " + str(p[2]))
+        p[0] = p[4]
     elif (p[1] == 'texto' and type(p[4]) in {str}):
         if p[4] is not None:
             variables[p[2]] = p[4]
             p[0] = p[4]
     else:
         print("Tipo de variable incorrecto en linea ",  parser.symstack[-1].lineno + 1)
-        exit()
+        sys.exit(-1)
 
 def p_expr_create_arr(p):
     ''' expr : NUM '[' ']' SYMBOL
              | TEXTO '[' ']' SYMBOL
     '''
     if p[1] == "num":
-        variables[p[4]] = [0]
+        variables[p[4]] = []
+        variables[p[4]].append(sys.maxsize)
     elif p[1] == "texto":
-        variables[p[4]] = [""]
+        variables[p[4]] = []
+        variables[p[4]].append("FIRST_MIGHTY_STRING")
 
 def p_expr_arr_append(p):
     '''expr : SYMBOL '.' APPEND '(' expr ')'
     '''
     if p[1] in variables:
-        if isinstance(p[1][0], str) and isinstance(p[5], str):
-            variables[p[1]].append(p[5])
-        elif isinstance(p[1][0], (int, float)) and isinstance(p[5], (int, float)):
-            variables[p[1]].append(p[5])
+        if type(variables[p[1]])==list:
+            if isinstance(variables[p[1]][0], str) and isinstance(p[5], str):
+                if len(variables[p[1]]) == 1 and variables[p[1]][0] == "FIRST_MIGHTY_STRING":
+                    variables[p[1]][0] = p[5]
+                else:
+                    variables[p[1]].append(p[5])
+            elif isinstance(variables[p[1]][0], (int, float)) and isinstance(p[5], (int, float)):
+                if len(variables[p[1]]) == 1 and variables[p[1]][0] == sys.maxsize:
+                    variables[p[1]][0] = p[5]
+                else:
+                    variables[p[1]].append(p[5])
+            else:
+                print("Error: Tipo de dato incorrecto a la hora de agregar a arreglo")
+                sys.exit(-1)    
         else:
-            print("Error: Tipo de dato incorrecto a la hora de agregar a arreglo")
-            exit()    
+            print("Error: La variable no es de tipo arreglo")
+            sys.exit(-1)
     else:
         print("Error: variable no declarada: ",p[1]," en linea ",parser.symstack[-1].lineno + 1)
-        exit()
+        sys.exit(-1)
 
 def p_expr_arr_get(p):
     '''expr : SYMBOL '.' GET '(' expr ')'
     '''
-    p[0] = variables[p[1]][p[5]]
+    if(len(variables[p[1]]) <= p[5]):
+        print("Error: indice fuera de rango para " + str(p[1]) + " en la linea " + parser.symstack[-1].lineno + 1 )
+    elif (len(variables[p[1]]) == 1 and p[5] == 0):
+        print("Entré a la condición de no hacer nada")
+        if (variables[p[1]][p[5]] ==sys.maxsize):
+            p[0] = None
+        elif (variables[p[1]][p[5]] =="FIRST_MIGHTY_STRING"):
+            p[0] = ""
+        else:
+            p[0] = variables[p[1]][p[5]]
+    else:
+        p[0] = variables[p[1]][p[5]]
     
 
 def p_expr_or_empty(p):
