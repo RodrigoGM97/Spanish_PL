@@ -77,6 +77,16 @@ def p_p(p):
     """
     pass
 
+def p_p_func(p):
+    """
+    p_func : stmt p_func
+      | expr ';' p_func
+      | boolexpr ';' p_func
+      | 
+    """
+    if not running[-1]:
+        return
+    pass
 
 def p_stmt(p):
     """
@@ -520,7 +530,7 @@ def p_expr_arr_get(p):
     if(len(variables[p[1]]) <= p[5]):
         print("Error: indice fuera de rango para " + str(p[1]) + " en la linea " + parser.symstack[-1].lineno + 1 )
     elif (len(variables[p[1]]) == 1 and p[5] == 0):
-        print("Entré a la condición de no hacer nada")
+        #print("Entré a la condición de no hacer nada")
         if (variables[p[1]][p[5]] ==sys.maxsize):
             p[0] = None
         elif (variables[p[1]][p[5]] =="FIRST_MIGHTY_STRING"):
@@ -529,8 +539,25 @@ def p_expr_arr_get(p):
             p[0] = variables[p[1]][p[5]]
     else:
         p[0] = variables[p[1]][p[5]]
-    
 
+
+def p_func_def(p):
+    '''
+        stmt : FUNC SYMBOL '{' funcA p_func funcB '}'
+    '''
+    print("SOY UNA FUNCION")
+    print(p[4])
+
+
+#def p_param(p):
+#    '''
+#    param : SYMBOL param
+#            | expr param
+#            |
+#    '''
+#    p[0] = "heehee"
+#    pass
+#    
 def p_expr_or_empty(p):
     """
     expr_or_empty : expr
@@ -541,6 +568,27 @@ def p_expr_or_empty(p):
 
     if len(p) == 2:
         p[0] = p[1]
+
+def p_funcA(p):
+    """
+    funcA :
+    """
+    global running
+    # If current state is not running
+    running.append(False)
+
+    
+def p_funcB(p):
+    """
+    funcB :
+    """
+    global running
+    #running.pop()
+    print("soy func b")
+    if running[-1]:
+        p.lexer.lexpos = parser.symstack[-5].lexpos
+        print("Mi función está en la linea ", p.lexer.lexpos)
+        running.append(False)
 
 
 # Build the parser
