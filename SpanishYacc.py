@@ -2,6 +2,7 @@ import sys
 import ply.yacc as yacc
 from SpanishLex import tokens
 
+f = open("log.txt", "w")
 
 # Check types for operator and operands
 def check_int_float_operands(p):
@@ -28,12 +29,13 @@ def boolexpr(expr):
 
 # A map that contains variables and their values
 variables = {}
+functions = {}
 # Contains the last error number happened in runtime environment
 runtime_err = 0
 # A stack containing running states
 # It gets used for disabling interpreting in if and while statements
 running = [True]
-
+exec_function = [False]
 
 # Get's a symbol from variables dictionary and shows error if not exists
 def get_symbol(p, i):
@@ -75,17 +77,6 @@ def p_p(p):
       | boolexpr ';' p
       | 
     """
-    pass
-
-def p_p_func(p):
-    """
-    p_func : stmt p_func
-      | expr ';' p_func
-      | boolexpr ';' p_func
-      | 
-    """
-    if not running[-1]:
-        return
     pass
 
 def p_stmt(p):
@@ -543,12 +534,12 @@ def p_expr_arr_get(p):
 
 def p_func_def(p):
     '''
-        stmt : FUNC SYMBOL '{' funcA p_func funcB '}'
+        stmt : FUNC SYMBOL '{' funcA p funcB '}' 
     '''
-    print("SOY UNA FUNCION")
+    f.write("\nSOY UNA FUNCION")
     print(p[4])
 
-
+    return p
 #def p_param(p):
 #    '''
 #    param : SYMBOL param
@@ -572,23 +563,48 @@ def p_expr_or_empty(p):
 def p_funcA(p):
     """
     funcA :
+        
     """
     global running
+    f.write("soy func A")
     # If current state is not running
-    running.append(False)
+    if not p[-2] in functions:
+        functions[p[-2]] = parser.symstack[-3].lexpos
+        f.write("\nfunctions tiene " +str( functions))
+    if not exec_function[-1]:
+        running.append(False)
+    else:
+        running.append(True)
 
-    
+
+def p_call_func(p):
+    '''
+    stmt : LLAMA SYMBOL ';'
+    '''
+    f.write("\nDebo llamar a la función")
+    if p[2] in functions:
+        f.write("\nLa función " + str(p[2]) + " sí existe y está en el char " + str(functions[p[2]]))
+        exec_function.append(True)
+        f.write("\nexec function tiene " +str( exec_function))
+        #debo cambiar de línea. Este salto no está funcionando. 
+        p.lexer.lexpos = functions[p[2]]
+        #parser.lexer.lexpos = functions[p[2]]
+        f.write("obj" + str(p.lexer))
+    return p
 def p_funcB(p):
     """
     funcB :
     """
     global running
-    #running.pop()
-    print("soy func b")
-    if running[-1]:
-        p.lexer.lexpos = parser.symstack[-5].lexpos
-        print("Mi función está en la linea ", p.lexer.lexpos)
-        running.append(False)
+    running.pop()
+    f.write("\nA running le queda " +str( running))
+    f.write("\nsoy func b")
+    if exec_function[-1]:
+        #p.lexer.lexpos = parser.symstack[-5].lexpos
+        f.write("\nMi función se va a ejectuar y está en la linea " +str( p.lexer.lexpos))
+        exec_function.pop()
+        #I must return my parser to the regular state. 
+        #sys.exit(-1)
 
 
 # Build the parser

@@ -34,7 +34,8 @@ reserved = {
     'noes' : 'NOTEQUAL',
     'agrega': 'APPEND',
     'obtiene': 'GET',
-    'alv' : 'ALV'
+    'alv' : 'ALV',
+    'llama': 'LLAMA'
     
 }
 tokens = (
