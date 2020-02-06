@@ -6,8 +6,6 @@ def token_error(t):
     print("Illegal character  in line ")
           
     t.lexer.skip(1)
-
-
 # Track line numbers
 def token_newline(t):
     r'\n+'

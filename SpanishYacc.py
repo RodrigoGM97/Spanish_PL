@@ -583,13 +583,14 @@ def p_funcA(p):
     return p
     
 def p_error(p):
-    if p == None:
-        token = "end of file"
-    else:
-        token = f"{p.type}({p.value}) on line {p.lineno}"
 
-    print(f"Syntax error: Unexpected {token}")
+    # get formatted representation of stack
+    stack_state_str = ' '.join([symbol.type for symbol in parser.symstack][1:])
 
+    print('Syntax error in input! Parser State:{} {} . {}'
+          .format(parser.state,
+                  stack_state_str,
+                  p))
 
 def p_call_func(p):
     '''
