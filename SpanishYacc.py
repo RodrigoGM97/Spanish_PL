@@ -4,9 +4,7 @@ from SpanishLex import tokens
 
 f = open("log.txt", "w")
 
-# Check types for operator and operands
 def check_int_float_operands(p):
-    # If something is none then it's error has been reported
     if p[1] is None or p[3] is None:
         return False
 
@@ -37,20 +35,13 @@ runtime_err = 0
 running = [True]
 exec_function = [False]
 
-# Get's a symbol from variables dictionary and shows error if not exists
 def get_symbol(p, i):
-    # Get symbol's value form variables dictionary
-#    symbol_val = variables.get(p[i], None)
-#    # If symbol does not exist
-#    print("en p traigo " + str(p[i]))
-#    if symbol_val is None:
     if not p[i] in variables:
         print("Variable is not defined")
     else:
         return variables[p[i]]
 
     return None
-
 
 precedence = (
     ('right', 'ASSIGN'),
@@ -104,10 +95,8 @@ def p_print_arguments(p):
     if p[1] is None:
         return
 
-    # Second rule
     if len(p) == 2:
         p[0] = str(p[1])
-    # First rule
     else:
         if p[3] is not None and p[1] is not None:
             p[0] = str(p[1]) + p[3]
@@ -172,10 +161,8 @@ def p_whileA(p):
     whileA :
     """
     global running
-    # If current state is not running
     if not running[-1]:
         running.append(False)
-    # Push evaluated value as running state
     else:
         running.append(p[-3])
 
@@ -465,10 +452,8 @@ def p_expr_create_no_value(p):
     '''
     if not running[-1]:
         return
-    if p[1] == 'num':
-    
+    if p[1] == 'num':    
         variables[p[2]] = sys.maxsize
-        #print("Voy a meter el valor de " + str(p[4]) + " en " + str(p[2]))
         p[0] = None
     elif p[1] == 'texto':
         variables[p[2]] = ""
@@ -481,10 +466,8 @@ def p_expr_create(p):
     """
     if not running[-1]:
         return
-    if( p[1] == 'num' and type(p[4]) in {int,float}) or p[4] == None:
-    
+    if( p[1] == 'num' and type(p[4]) in {int,float}) or p[4] == None:    
         variables[p[2]] = p[4]
-        #print("Voy a meter el valor de " + str(p[4]) + " en " + str(p[2]))
         p[0] = p[4]
     elif (p[1] == 'texto' and type(p[4]) in {str}):
         if p[4] is not None:
@@ -555,15 +538,7 @@ def p_func_def(p):
     #print(p[4])
 
     return p
-#def p_param(p):
-#    '''
-#    param : SYMBOL param
-#            | expr param
-#            |
-#    '''
-#    p[0] = "heehee"
-#    pass
-#    
+ 
 def p_expr_or_empty(p):
     """
     expr_or_empty : expr
@@ -582,7 +557,6 @@ def p_funcA(p):
     """
     global running
     f.write("soy func A")
-    # If current state is not running
     if not p[-2] in functions:
         functions[p[-2]] = parser.symstack[-3].lexpos
         f.write("\nfunctions tiene " +str( functions))

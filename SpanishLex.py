@@ -1,9 +1,6 @@
 from re import UNICODE as RE_UNICODE
 import ply.lex as lex
 
-
-
-
 # Prints an error output for illegal token
 def token_error(t):
     print("Illegal character  in line ")
@@ -16,8 +13,6 @@ def token_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-
-# Juicy's reserved keywords
 reserved = {
     'si': 'SI',
     'sino': 'SINO',
@@ -39,7 +34,6 @@ reserved = {
     
 }
 tokens = (
-             #'NOTEQUAL',
              'GE',
              'LE',
              'ASSIGN',
@@ -50,8 +44,7 @@ tokens = (
              'IMPRIME',
              'SI'            
          ) + tuple(reserved.values())
-#print(tokens)
-#t_NOTEQUAL = r'<>'
+
 t_ASSIGN = r'<-'
 
 literals = (
@@ -78,21 +71,19 @@ literals = (
 t_GE = r'>='
 t_LE = r'<='
 
-# Read in a float. This rule has to be done before the int rule.
+
 def t_FLOAT(t):
     r'\d+\.\d*(e-?\d+)?'
     t.value = float(t.value)
     return t
 
-
-# Read in an int
 def t_INT(t):
     r'\d+'
     t.value = int(t.value)
     return t
 
 
-# Read in a string, as in C. The following backslash sequences have their usual special meaning: \", \\, \n, and \t
+
 def t_STRING(t):
     r'\"([^\\"]|(\\.))*\"'
     escaped = 0
@@ -116,12 +107,8 @@ def t_STRING(t):
     t.value = new_str
     return t
 
-
-# Read in a symbol. This rule must be practically last since there are so
-# few rules concerning what constitutes a symbol
 def t_SYMBOL(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    # See if symbol is a reserved keyword
     t.type = reserved.get(t.value, 'SYMBOL')
     return t
 
