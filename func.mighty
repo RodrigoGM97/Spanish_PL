@@ -8,5 +8,5 @@ mientras (var1 < 10)
 func funcioncita {
     imprime("hola crayola");        
 }
-
+llama funcioncita;
 imprime("queso cotija");

@@ -80,6 +80,7 @@ def p_stmt(p):
 
     print(p[3])
 
+    return p
 
 def p_print_arguments(p):
     """
@@ -100,7 +101,7 @@ def p_print_arguments(p):
     else:
         if p[3] is not None and p[1] is not None:
             p[0] = str(p[1]) + p[3]
-
+    return p
 
 def p_stmt_if(p):
     """
@@ -118,7 +119,7 @@ def p_ifA(p):
         running.append(False)
     else:
         running.append(p[-3])
-
+    return p
 
 def p_ifB(p):
     """
@@ -127,6 +128,7 @@ def p_ifB(p):
     global running
     running.pop()
 
+    return p
 
 def p_ifC(p):
     """
@@ -138,7 +140,7 @@ def p_ifC(p):
     else:
         running.append(not p[-9])
 
-
+    return p
 def p_stmt_while(p):
     """
     stmt : MIENTRAS '(' boolexpr ')' '{' whileA p whileB '}'
@@ -155,7 +157,8 @@ def p_alv(p):
     else:
         print("Error: al remover el elemento de ", str(p[1]))
         sys.exit(-1)
-        
+    return p
+
 def p_whileA(p):
     """
     whileA :
@@ -165,7 +168,7 @@ def p_whileA(p):
         running.append(False)
     else:
         running.append(p[-3])
-
+    return p
 
 def p_whileB(p):
     """
@@ -177,7 +180,7 @@ def p_whileB(p):
     if running[-1] and p[-5]:
         p.lexer.lexpos = parser.symstack[-7].lexpos
 
-
+    return p
 def p_boolexpr_and(p):
     """
     boolexpr : boolexpr AND boolexpr
@@ -192,7 +195,7 @@ def p_boolexpr_and(p):
     elif p[2] == "o":
         if p[1] is not None and p[3] is not None:
             p[0] = p[1] or p[3]
-
+    return p
 def p_boolexpr_paran(p):
     """
     boolexpr : '(' boolexpr ')'
@@ -202,7 +205,7 @@ def p_boolexpr_paran(p):
 
     if p[2] is not None:
         p[0] = p[2]
-
+    return p
 def p_boolexpr_comparison(p):
     """
     boolexpr : comparison
@@ -214,7 +217,7 @@ def p_boolexpr_comparison(p):
         return
 
     p[0] = True if type(p[1]) is not bool else False
-
+    return p
 
 def p_comparison_gt(p):
     """
@@ -230,7 +233,7 @@ def p_comparison_gt(p):
             p[0] = False
         else:
             p[0] = p[3] if p[1] > p[3] else False
-
+    return p
 
 def p_comparison_lt(p):
     """
@@ -246,7 +249,7 @@ def p_comparison_lt(p):
             p[0] = False
         else:
             p[0] = p[3] if p[1] < p[3] else False
-
+    return p
 
 def p_comparison_eq(p):
     """
@@ -263,6 +266,7 @@ def p_comparison_eq(p):
         else:
             p[0] = p[3] if p[1] == p[3] else False
 
+    return p
 
 def p_comparison_neq(p):
     """
@@ -279,6 +283,7 @@ def p_comparison_neq(p):
         else:
             p[0] = p[3] if p[1] != p[3] else False
 
+    return p
 
 def p_comparison_le(p):
     """
@@ -295,7 +300,7 @@ def p_comparison_le(p):
         else:
             p[0] = p[3] if p[1] <= p[3] else False
 
-
+    return p
 def p_comparison_ge(p):
     """
     comparison : comparisonA GE expr
@@ -311,6 +316,7 @@ def p_comparison_ge(p):
         else:
             p[0] = p[3] if p[1] >= p[3] else False
 
+    return p
 
 def p_comparisonA(p):
     """
@@ -322,6 +328,7 @@ def p_comparisonA(p):
 
     p[0] = p[1]
 
+    return p
 
 def p_expr_plus(p):
     """
@@ -332,7 +339,7 @@ def p_expr_plus(p):
 
     if p[1] is not None and p[3] is not None:
         p[0] = p[1] + p[3]
-
+    return p
 
 def p_expr_minus(p):
     """
@@ -343,7 +350,7 @@ def p_expr_minus(p):
 
     if check_int_float_operands(p):
         p[0] = p[1] - p[3]
-
+    return p
 
 def p_expr_mul(p):
     """
@@ -355,6 +362,7 @@ def p_expr_mul(p):
     if check_int_float_operands(p):
         p[0] = p[1] * p[3]
 
+    return p
 
 def p_expr_div(p):
     """
@@ -365,7 +373,7 @@ def p_expr_div(p):
 
     if check_int_float_operands(p):
         p[0] = p[1] / p[3]
-
+    return p
 
 def p_expr_pow(p):
     """
@@ -377,7 +385,7 @@ def p_expr_pow(p):
     if check_int_float_operands(p):
         p[0] = pow(p[1], p[3])
 
-
+    return p
 def p_expr_symbol(p):
     """
     expr : SYMBOL
@@ -389,7 +397,7 @@ def p_expr_symbol(p):
     if sym_val is not None:
         p[0] = sym_val
 
-
+    return p
 def p_expr(p):
     """
     expr : INT
@@ -400,7 +408,7 @@ def p_expr(p):
         return
 
     p[0] = p[1]
-
+    return p
 def p_get_length(p):
     """
     expr : LEN '(' SYMBOL ')'
@@ -409,7 +417,7 @@ def p_get_length(p):
         p[0] = len(variables[p[3]])
     else:
         print("Error: No es posible obtener la longitud de un numero en la línea " ,parser.symstack[-1].lineno + 1)
-
+    return p
 def p_expr_paran(p):
     """
     expr : '(' expr ')'
@@ -418,7 +426,7 @@ def p_expr_paran(p):
         return
 
     p[0] = p[2]
-
+    return p
 
 def p_expr_unary_minus(p):
     """
@@ -429,6 +437,7 @@ def p_expr_unary_minus(p):
 
     if p[2] is not None:
         p[0] = -p[2]
+    return p
 
 
 def p_expr_assign(p):
@@ -445,6 +454,7 @@ def p_expr_assign(p):
     else:
         print("Tipo de variable incorrecto en linea ",  parser.symstack[-1].lineno + 1)
         sys.exit(-1)
+    return p
 def p_expr_create_no_value(p):
     '''
     expr : TEXTO SYMBOL
@@ -458,7 +468,7 @@ def p_expr_create_no_value(p):
     elif p[1] == 'texto':
         variables[p[2]] = ""
         p[0] = ""
-
+    return p
 def p_expr_create(p):
     """
     expr : TEXTO SYMBOL ASSIGN expr
@@ -476,7 +486,7 @@ def p_expr_create(p):
     else:
         print("Tipo de variable incorrecto en linea ",  parser.symstack[-1].lineno + 1)
         sys.exit(-1)
-
+    return p
 def p_expr_create_arr(p):
     ''' expr : NUM '[' ']' SYMBOL
              | TEXTO '[' ']' SYMBOL
@@ -487,7 +497,7 @@ def p_expr_create_arr(p):
     elif p[1] == "texto":
         variables[p[4]] = []
         variables[p[4]].append("FIRST_MIGHTY_STRING")
-
+    return p
 def p_expr_arr_append(p):
     '''expr : SYMBOL '.' APPEND '(' expr ')'
     '''
@@ -512,7 +522,7 @@ def p_expr_arr_append(p):
     else:
         print("Error: variable no declarada: ",p[1]," en linea ",parser.symstack[-1].lineno + 1)
         sys.exit(-1)
-
+    return p
 def p_expr_arr_get(p):
     '''expr : SYMBOL '.' GET '(' expr ')'
     '''
@@ -532,7 +542,7 @@ def p_expr_arr_get(p):
 
 def p_func_def(p):
     '''
-        stmt : FUNC SYMBOL '{' funcA p funcB '}' 
+        stmt : FUNC SYMBOL '{' funcA p funcB '}' p
     '''
     f.write("\nSOY UNA FUNCION")
     #print(p[4])
@@ -549,6 +559,7 @@ def p_expr_or_empty(p):
 
     if len(p) == 2:
         p[0] = p[1]
+    return p
 
 def p_funcA(p):
     """
@@ -564,11 +575,12 @@ def p_funcA(p):
         running.append(False)
     else:
         running.append(True)
-
+    return p
 
 def p_call_func(p):
     '''
     stmt : LLAMA SYMBOL ';'
+
     '''
     f.write("\nDebo llamar a la función")
     if p[2] in functions:
@@ -576,10 +588,11 @@ def p_call_func(p):
         exec_function.append(True)
         f.write("\nexec function tiene " +str( exec_function))
         #debo cambiar de línea. Este salto no está funcionando. 
-        #p.lexer.lexpos = functions[p[2]]
-        p.parser.restart()
+        p.lexer.lexpos = functions[p[2]]
+        #p.parser.restart()
         #parser.lexer.lexpos = functions[p[2]]
-        f.write("obj" + str(p.lexer))
+        f.write("obj" + str(parser.symstack))
+        
     return p
 def p_funcB(p):
     """
@@ -595,7 +608,7 @@ def p_funcB(p):
         exec_function.pop()
         #I must return my parser to the regular state. 
         #sys.exit(-1)
-
+    return p
 
 # Build the parser
 parser = yacc.yacc(errorlog=yacc.NullLogger())
