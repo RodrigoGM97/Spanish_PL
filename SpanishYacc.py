@@ -544,17 +544,13 @@ def p_expr_arr_get(p):
 
 
 def p_func_def(p):
-    '''
-        stmt : FUNC SYMBOL '{' funcA p funcB '}'
+    '''stmt : FUNC SYMBOL '{' funcA p funcB '}'
     '''
     global return_pos
     f.write("\nSOY UNA FUNCION")
     print("soy func main")
     #print(p[4])
-    if(len(return_pos)>0):
-            print("Regresando a la normalidad: ")
-            p.lexer.lexpos = return_pos[-1] -2
-            return_pos.pop()
+
     return p
  
 def p_expr_or_empty(p):
@@ -578,7 +574,7 @@ def p_funcA(p):
     print("estoy en funcA")
     f.write("soy func A")
     if not p[-2] in functions:
-        functions[p[-2]] = parser.symstack[-3].lexpos
+        functions[p[-2]] = {"lexpos" : parser.symstack[-3].lexpos,"lineno":parser.symstack[-3].lineno}
         f.write("\nfunctions tiene " +str( functions))
     if not exec_function[-1]:
         running.append(False)
@@ -586,11 +582,15 @@ def p_funcA(p):
         running.append(True)
     return p
     
-#def p_error(p):
-#    if p:
-#        print("parsed an error...continuing")
-#        p.lexer.lexpos = p.lexer.lexpos +1
-#    pass
+def p_error(p):
+    if p == None:
+        token = "end of file"
+    else:
+        token = f"{p.type}({p.value}) on line {p.lineno}"
+
+    print(f"Syntax error: Unexpected {token}")
+
+
 def p_call_func(p):
     '''
     stmt : LLAMA SYMBOL ';'
@@ -606,7 +606,8 @@ def p_call_func(p):
         exec_function.append(True)
         f.write("\nexec function tiene " +str( exec_function))
         #debo cambiar de línea. Este salto no está funcionando. 
-        p.lexer.lexpos = functions[p[2]] -2
+        p.lexer.lexpos = functions[p[2]]["lexpos"]
+        p.lexer.lineno = functions[p[2]]["lineno"]
         print("jejeje")
         #p.parser.restart()
         #parser.lexer.lexpos = functions[p[2]]
@@ -630,6 +631,10 @@ def p_funcB(p):
         print("Debo regresar a mi posición original",return_pos[-1] + 1)
         #I must return my parser to the regular state. 
         #sys.exit(-1)
+        if(len(return_pos)>0):
+            print("Regresando a la normalidad: ")
+            p.lexer.lexpos = return_pos[-1]
+            return_pos.pop()
         
     return p
 

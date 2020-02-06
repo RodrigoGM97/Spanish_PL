@@ -21,7 +21,7 @@ reserved = {
     'lon': 'LEN',
     'to_str': 'TO_STR',
     'err': 'ERR',
-    'func':'FUNC',
+    'func': 'FUNC',
     'y': 'AND',
     'o': 'OR',
     'num': 'NUM',
