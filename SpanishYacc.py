@@ -30,10 +30,12 @@ variables = {}
 functions = {}
 # Contains the last error number happened in runtime environment
 runtime_err = 0
+return_stack = []
 # A stack containing running states
 # It gets used for disabling interpreting in if and while statements
 running = [True]
 exec_function = [False]
+return_pos = []
 
 def get_symbol(p, i):
     if not p[i] in variables:
@@ -474,6 +476,7 @@ def p_expr_create(p):
     expr : TEXTO SYMBOL ASSIGN expr
          | NUM SYMBOL ASSIGN expr
     """
+    print("definiendo variable")
     if not running[-1]:
         return
     if( p[1] == 'num' and type(p[4]) in {int,float}) or p[4] == None:    
@@ -542,11 +545,16 @@ def p_expr_arr_get(p):
 
 def p_func_def(p):
     '''
-        stmt : FUNC SYMBOL '{' funcA p funcB '}' p
+        stmt : FUNC SYMBOL '{' funcA p funcB '}'
     '''
+    global return_pos
     f.write("\nSOY UNA FUNCION")
+    print("soy func main")
     #print(p[4])
-
+    if(len(return_pos)>0):
+            print("Regresando a la normalidad: ")
+            p.lexer.lexpos = return_pos[-1] -2
+            return_pos.pop()
     return p
  
 def p_expr_or_empty(p):
@@ -566,7 +574,8 @@ def p_funcA(p):
     funcA :
         
     """
-    global running
+    global running, exec_function
+    print("estoy en funcA")
     f.write("soy func A")
     if not p[-2] in functions:
         functions[p[-2]] = parser.symstack[-3].lexpos
@@ -576,38 +585,52 @@ def p_funcA(p):
     else:
         running.append(True)
     return p
-
+    
+#def p_error(p):
+#    if p:
+#        print("parsed an error...continuing")
+#        p.lexer.lexpos = p.lexer.lexpos +1
+#    pass
 def p_call_func(p):
     '''
     stmt : LLAMA SYMBOL ';'
 
     '''
+    global return_pos
+    print("estoy en llama func")
     f.write("\nDebo llamar a la función")
+    f.write("Estoy en la pos" + str(p.lexer.lexpos))
+    return_pos.append(p.lexer.lexpos)
     if p[2] in functions:
         f.write("\nLa función " + str(p[2]) + " sí existe y está en el char " + str(functions[p[2]]))
         exec_function.append(True)
         f.write("\nexec function tiene " +str( exec_function))
         #debo cambiar de línea. Este salto no está funcionando. 
-        p.lexer.lexpos = functions[p[2]]
+        p.lexer.lexpos = functions[p[2]] -2
+        print("jejeje")
         #p.parser.restart()
         #parser.lexer.lexpos = functions[p[2]]
         f.write("obj" + str(parser.symstack))
+    
         
     return p
 def p_funcB(p):
     """
     funcB :
     """
-    global running
+    global running, exec_function, return_pos
     running.pop()
+    print("estoy en funcB")
     f.write("\nA running le queda " +str( running))
     f.write("\nsoy func b")
     if exec_function[-1]:
         #p.lexer.lexpos = parser.symstack[-5].lexpos
         f.write("\nMi función se va a ejectuar y está en la linea " +str( p.lexer.lexpos))
         exec_function.pop()
+        print("Debo regresar a mi posición original",return_pos[-1] + 1)
         #I must return my parser to the regular state. 
         #sys.exit(-1)
+        
     return p
 
 # Build the parser
