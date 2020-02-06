@@ -504,6 +504,9 @@ def p_expr_create_arr(p):
 def p_expr_arr_append(p):
     '''expr : SYMBOL '.' APPEND '(' expr ')'
     '''
+    #print("recibi ", p[5])
+    if p[5] is None:
+        return
     if p[1] in variables:
         if type(variables[p[1]])==list:
             if isinstance(variables[p[1]][0], str) and isinstance(p[5], str):
@@ -511,7 +514,7 @@ def p_expr_arr_append(p):
                     variables[p[1]][0] = p[5]
                 else:
                     variables[p[1]].append(p[5])
-            elif isinstance(variables[p[1]][0], (int, float)) and isinstance(p[5], (int, float)):
+            elif isinstance(variables[p[1]][0], (int, float)) and isinstance(p[5], (int, float)) :
                 if len(variables[p[1]]) == 1 and variables[p[1]][0] == sys.maxsize:
                     variables[p[1]][0] = p[5]
                 else:
@@ -529,6 +532,8 @@ def p_expr_arr_append(p):
 def p_expr_arr_get(p):
     '''expr : SYMBOL '.' GET '(' expr ')'
     '''
+    if p[5] ==None:
+        return
     if(len(variables[p[1]]) <= p[5]):
         print("Error: indice fuera de rango para " + str(p[1]) + " en la linea " + parser.symstack[-1].lineno + 1 )
     elif (len(variables[p[1]]) == 1 and p[5] == 0):

@@ -1,0 +1,65 @@
+num[] mat1;
+num[] mat2;
+num mat_cols <- 2;
+num mat_rows<- 2;
+
+mat1.agrega(0);
+mat1.agrega(1);
+mat1.agrega(1);
+mat1.agrega(1);
+imprime(mat1);
+
+mat2.agrega(1);
+mat2.agrega(2);
+mat2.agrega(3);
+mat2.agrega(4);
+imprime(mat2);
+
+num contador_x <- 0;
+num contador_y <- 0;
+num[] res_mat;
+num suma_linea <-0;
+num next_row <- 0;
+num next_col <- 0;
+mientras (next_row < mat_rows)
+{
+    imprime("iteración num ", contador_x);
+    mientras ( contador_y < mat_cols )
+    {
+        imprime("matriz1 en ", (next_row), " , ",contador_y);
+        imprime("valgo ", mat1.obtiene((contador_x * mat_cols) + contador_y));
+        imprime("matriz2 en ", (contador_y), " , ",contador_x);
+        imprime("valgo ", mat2.obtiene((contador_y * mat_cols) + contador_x));
+        suma_linea<-suma_linea + ((mat2.obtiene((contador_y * mat_cols) + contador_x)) * mat1.obtiene((next_row * mat_cols) + contador_y));
+        imprime("la suma de esta linea es ", suma_linea);
+        contador_y<- contador_y +1;
+    }
+    imprime("VOY A AGREGAR AL RESULTADO");
+    res_mat.agrega(suma_linea);
+    imprime("mi arreglo es ", res_mat);
+    suma_linea <- 0;
+    contador_y<-0;
+    contador_x<-contador_x+1;
+    mientras ( contador_y < mat_cols )
+    {
+        imprime("matriz1 en ", (next_row), " , ",contador_y);
+        imprime("valgo ", mat1.obtiene((next_row * mat_cols) + contador_y));
+        imprime("matriz2 en ", (contador_y), " , ",contador_x);
+        imprime("valgo ", mat2.obtiene((contador_y * mat_cols) + contador_x));
+        suma_linea<-suma_linea + ((mat2.obtiene((contador_y * mat_cols) + contador_x)) * mat1.obtiene((next_row * mat_cols) + contador_y));
+        imprime("la suma de esta linea es ", suma_linea);
+        contador_y<- contador_y +1;
+    }
+    imprime("VOY A AGREGAR AL RESULTADO");
+    res_mat.agrega(suma_linea);
+    imprime("mi arreglo es ", res_mat);
+    suma_linea <- 0;
+    contador_y<-0;
+    contador_x <- 0;
+    imprime("mi contador valía", contador_x);
+    
+    imprime("mi contador ahora vale", contador_x);
+    next_row <- next_row +1;
+}
+
+imprime("Mi matriz resultante es ", res_mat);
