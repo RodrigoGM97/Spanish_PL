@@ -7,6 +7,6 @@ from SpanishYacc import yacc
     # Showing help text
 
 # Reading a source file
-with open('func.mighty', 'rt', encoding='utf-8') as file:
+with open('pow.mighty', 'rt', encoding='utf-8') as file:
         source = file.read()
 yacc.parse(source)

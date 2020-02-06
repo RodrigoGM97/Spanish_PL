@@ -458,6 +458,21 @@ def p_expr_assign(p):
     else:
         print("Tipo de variable incorrecto en linea ",  parser.symstack[-1].lineno + 1)
         sys.exit(-1)
+def p_expr_create_no_value(p):
+    '''
+    expr : TEXTO SYMBOL
+          | NUM SYMBOL
+    '''
+    if not running[-1]:
+        return
+    if p[1] == 'num':
+    
+        variables[p[2]] = sys.maxsize
+        #print("Voy a meter el valor de " + str(p[4]) + " en " + str(p[2]))
+        p[0] = None
+    elif p[1] == 'texto':
+        variables[p[2]] = ""
+        p[0] = ""
 
 def p_expr_create(p):
     """
@@ -588,6 +603,7 @@ def p_call_func(p):
         f.write("\nexec function tiene " +str( exec_function))
         #debo cambiar de línea. Este salto no está funcionando. 
         #p.lexer.lexpos = functions[p[2]]
+        p.parser.restart()
         #parser.lexer.lexpos = functions[p[2]]
         f.write("obj" + str(p.lexer))
     return p
