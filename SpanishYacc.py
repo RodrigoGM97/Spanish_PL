@@ -537,7 +537,7 @@ def p_func_def(p):
         stmt : FUNC SYMBOL '{' funcA p funcB '}' 
     '''
     f.write("\nSOY UNA FUNCION")
-    print(p[4])
+    #print(p[4])
 
     return p
 #def p_param(p):
@@ -587,7 +587,7 @@ def p_call_func(p):
         exec_function.append(True)
         f.write("\nexec function tiene " +str( exec_function))
         #debo cambiar de línea. Este salto no está funcionando. 
-        p.lexer.lexpos = functions[p[2]]
+        #p.lexer.lexpos = functions[p[2]]
         #parser.lexer.lexpos = functions[p[2]]
         f.write("obj" + str(p.lexer))
     return p
