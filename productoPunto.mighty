@@ -1,0 +1,39 @@
+num[] xVector;
+num[] yVector;
+
+num sum <- 0;
+num temp <- 0;
+num hola;
+
+xVector.agrega(1);
+xVector.agrega(2);
+xVector.agrega(3);
+xVector.agrega(4);
+
+yVector.agrega(5);
+yVector.agrega(6);
+yVector.agrega(7);
+yVector.agrega(8);
+
+num cont <- lon(xVector) - 1;
+num tempx <- 0;
+num tempy <- 0;
+num cont2 <- 5;
+
+mientras(cont >= 0){
+    tempx <- xVector.obtiene(cont);
+    tempy <- yVector.obtiene(cont);
+    sum <- sum + tempx * tempy;
+    cont <- cont - 1;
+    imprime("hola");
+    mientras(cont2 >= 0){
+        cont2 <- cont2 - 1;
+        imprime("dos mientras");
+    }
+    cont2 <- 5;
+}
+
+imprime(sum);
+
+
+
